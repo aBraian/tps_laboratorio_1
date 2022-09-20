@@ -8,17 +8,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-float calcularPorcentaje(int cantidadTotal, int cantidadPromedio){
-	float porcentaje;
-	porcentaje = (float)cantidadPromedio * 100 / cantidadTotal;
-	return porcentaje;
+int calcularPromedio(int sumaCantidades, int divisor, float * promedio){
+	int retorno;
+	float bufferPromedio;
+	retorno = -1;
+	if(promedio != NULL && divisor != 0){
+		bufferPromedio = (float)sumaCantidades / divisor;
+		*promedio = bufferPromedio;
+		retorno = 0;
+	}
+	return retorno;
 }
 
-float calcularInteres(int precio, int interes, float * aumento){
+int calcularPorcentaje(int cantidadTotal, int cantidadPromedio, float * porcentaje){
+	int retorno;
+	retorno = -1;
+	if(porcentaje != NULL && cantidadTotal != 0){
+		*porcentaje = (float)cantidadPromedio * 100 / cantidadTotal;
+		retorno = 0;
+	}
+	return retorno;
+}
+
+int calcularInteres(int precio, int porcentajeInteres, float * aumento, float * precioConInteres){
+	int retorno;
 	float aumentoNoAplicado;
 	float precioConAumento;
-	aumentoNoAplicado = (float)precio * interes / 100;
-	precioConAumento = precio + aumentoNoAplicado;
-	*aumento = aumentoNoAplicado;
-	return precioConAumento;
+	retorno = -1;
+	if(aumento != NULL && precioConInteres != NULL){
+		aumentoNoAplicado = (float)precio * porcentajeInteres / 100;
+		precioConAumento = precio + aumentoNoAplicado;
+		*aumento = aumentoNoAplicado;
+		*precioConInteres = precioConAumento;
+		retorno = 0;
+	}
+	return retorno;
 }

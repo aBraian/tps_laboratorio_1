@@ -45,7 +45,7 @@
 #define MAX_CONFEDERACION_JUGADORES 6
 #define REINTENTOS_CONFEDERACION_JUGADORES 2
 
-#define INTERES 35
+#define PORCENTAJE_INTERES 35
 
 #define MENSAJE_CORRECTO "   \nDATOS CARGADOS CORRECTAMENTE\n"
 #define MENSAJE_LIMITE_JUGADORES "   \nSE ALCANZO EL LIMITE DE JUGADORES EN ESTA POSICION\n"
@@ -74,7 +74,9 @@ int main(void) {
 	int confederacionOfc;
 	int acumuladorJugadores;
 	int flagInteres;
-	int flagCostos;
+	int flagCostoHospedaje;
+	int flagCostoComida;
+	int flagCostoTransporte;
 	int flagJugadores;
 	int flagCalculos;
 	float porcentajeAfc;
@@ -83,6 +85,12 @@ int main(void) {
 	float porcentajeConmebol;
 	float porcentajeUefa;
 	float porcentajeOfc;
+	float promedioAfc;
+	float promedioCaf;
+	float promedioConcacaf;
+	float promedioConmebol;
+	float promedioUefa;
+	float promedioOfc;
 	float costoConInteres;
 	float aumento;
 	costoHospedaje = 0;
@@ -101,7 +109,9 @@ int main(void) {
 	confederacionOfc = 0;
 	acumuladorJugadores = 0;
 	flagInteres = 0;
-	flagCostos = 0;
+	flagCostoHospedaje = 0;
+	flagCostoComida = 0;
+	flagCostoTransporte = 0;
 	flagJugadores = 0;
 	flagCalculos = 0;
 	do{
@@ -129,9 +139,9 @@ int main(void) {
 				case 1:
 					do{
 						printf("\nMenu Secundario Costos\n\n"
-							   "1. Costo de hospedaje -> $%d\n"
-							   "2. Costo de comida -> $%d\n"
-							   "3. Costo de transporte -> $%d\n"
+							   "1. Costo de hospedaje (MAX: $5000000 - MIN: $50000) -> $%d\n"
+							   "2. Costo de comida (MAX: $50000 - MIN: $50) -> $%d\n"
+							   "3. Costo de transporte (MAX: $5000000 - MIN: $50000) -> $%d\n"
 							   "4. Volver\n"
 							   ,costoHospedaje, costoComida, costoTransporte);
 						if(!utn_getInt(&submenuCostos, "   Ingrese opcion: ", "   \nOPCION NO VALIDA\n",
@@ -141,24 +151,26 @@ int main(void) {
 									if(!utn_getInt(&costoHospedaje, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
 												   MIN_COSTOS_HOSPEDAJE, MAX_COSTOS_HOSPEDAJE, REINTENTOS_COSTOS_HOSPEDAJE)){
 										printf(MENSAJE_CORRECTO);
+										flagCostoHospedaje = 1;
 									}
 									break;
 								case 2:
 									if(!utn_getInt(&costoComida, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
 												   MIN_COSTOS_COMIDA, MAX_COSTOS_COMIDA, REINTENTOS_COSTOS_COMIDA)){
 										printf(MENSAJE_CORRECTO);
+										flagCostoComida = 1;
 									}
 									break;
 								case 3:
 									if(!utn_getInt(&costoTransporte, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
 												   MIN_COSTOS_TRANSPORTE, MAX_COSTOS_TRANSPORTE, REINTENTOS_COSTOS_TRANSPORTE)){
 										printf(MENSAJE_CORRECTO);
+										flagCostoTransporte = 1;
 									}
 									break;
 								case 4:
 									break;
 							}
-						flagCostos = 1;
 						}
 					}while(submenuCostos != 4);
 					break;
@@ -246,42 +258,50 @@ int main(void) {
 					}
 					break;
 				case 3:
-					if(flagCostos && flagJugadores){
+					if(flagCostoHospedaje && flagCostoComida && flagCostoTransporte && flagJugadores){
 						acumuladorJugadores = confederacionAfc + confederacionCaf + confederacionConcacaf +
 											  confederacionConmebol + confederacionUefa + confederacionOfc;
-						porcentajeAfc = calcularPorcentaje(acumuladorJugadores, confederacionAfc);
-						porcentajeCaf = calcularPorcentaje(acumuladorJugadores, confederacionCaf);
-						porcentajeConcacaf = calcularPorcentaje(acumuladorJugadores, confederacionConcacaf);
-						porcentajeConmebol  = calcularPorcentaje(acumuladorJugadores, confederacionConmebol);
-						porcentajeUefa = calcularPorcentaje(acumuladorJugadores, confederacionUefa);
-						porcentajeOfc = calcularPorcentaje(acumuladorJugadores, confederacionOfc);
+						calcularPromedio(confederacionAfc, acumuladorJugadores, &promedioAfc);
+						calcularPromedio(confederacionCaf, acumuladorJugadores, &promedioCaf);
+						calcularPromedio(confederacionConcacaf, acumuladorJugadores, &promedioConcacaf);
+						calcularPromedio(confederacionConmebol, acumuladorJugadores, &promedioConmebol);
+						calcularPromedio(confederacionUefa, acumuladorJugadores, &promedioUefa);
+						calcularPromedio(confederacionOfc, acumuladorJugadores, &promedioOfc);
+						calcularPorcentaje(acumuladorJugadores, confederacionAfc, &porcentajeAfc);
+						calcularPorcentaje(acumuladorJugadores, confederacionCaf, &porcentajeCaf);
+						calcularPorcentaje(acumuladorJugadores, confederacionConcacaf, &porcentajeConcacaf);
+						calcularPorcentaje(acumuladorJugadores, confederacionConmebol, &porcentajeConmebol);
+						calcularPorcentaje(acumuladorJugadores, confederacionUefa, &porcentajeUefa);
+						calcularPorcentaje(acumuladorJugadores, confederacionOfc, &porcentajeOfc);
 						costoMantenimiento = costoHospedaje + costoComida + costoTransporte;
 						if(porcentajeUefa > porcentajeAfc && porcentajeUefa > porcentajeCaf && porcentajeUefa > porcentajeConcacaf &&
 						   porcentajeUefa > porcentajeConmebol && porcentajeUefa > porcentajeOfc){
-							costoConInteres = calcularInteres(costoMantenimiento, INTERES, &aumento);
+							calcularInteres(costoMantenimiento, PORCENTAJE_INTERES, &aumento, &costoConInteres);
 							flagInteres = 1;
 						}
 						else{
 							flagInteres = 0;
 						}
 						printf(MENSAJE_CORRECTO);
-					flagCalculos = 1;
+						flagCalculos = 1;
 					}
 					else{
-						printf("   \nSE DEBE INGRESAR ANTES LOS COSTOS Y JUGADORES\n");
+						printf("\nSE DEBE INGRESAR ANTES TODOS LOS COSTOS (HOSPEDAJE\n"
+							   ", COMIDA, TRANSPORTE) Y JUGADORES\n");
 					}
 					break;
 				case 4:
 					if(flagCalculos){
 						printf("\nMenu Resultados\n\n"
-							   "   -Porcentaje AFC -> %.2f\n"
-							   "   -Porcentaje CAF -> %.2f\n"
-							   "   -Porcentaje CONCACAF -> %.2f\n"
-							   "   -Porcentaje CONMEBOL -> %.2f\n"
-							   "   -Porcentaje UEFA -> %.2f\n"
-							   "   -Porcentaje OFC -> %.2f\n"
+							   "   -Promedio AFC -> %.2f / Porcentaje AFC -> %.2f\n"
+							   "   -Promedio CAF -> %.2f /  Porcentaje CAF -> %.2f\n"
+							   "   -Promedio CONCACAF -> %.2f /  Porcentaje CONCACAF -> %.2f\n"
+							   "   -Promedio CONMEBOL -> %.2f /  Porcentaje CONMEBOL -> %.2f\n"
+							   "   -Promedio UEFA -> %.2f /  Porcentaje UEFA -> %.2f\n"
+							   "   -Promedio OFC -> %.2f /  Porcentaje OFC -> %.2f\n"
 							   "   -Costo de mantenimiento -> $%d\n"
-							   , porcentajeAfc, porcentajeCaf, porcentajeConcacaf, porcentajeConmebol, porcentajeUefa, porcentajeOfc
+							   , promedioAfc, porcentajeAfc, promedioCaf, porcentajeCaf, promedioConcacaf, porcentajeConcacaf
+							   , promedioConmebol, porcentajeConmebol, promedioUefa, porcentajeUefa, promedioOfc, porcentajeOfc
 							   , costoMantenimiento);
 						if(flagInteres){
 							printf("\nMAYORIA DEL PLANTEL COMPUESTA POR CONFEDERACION\n"

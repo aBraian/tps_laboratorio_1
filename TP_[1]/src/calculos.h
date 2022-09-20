@@ -8,7 +8,8 @@
 #ifndef CALCULOS_H_
 #define CALCULOS_H_
 
-float calcularPorcentaje(int cantidadTotal, int cantidadPromedio);
-float calcularInteres(int precio, int interes, float * aumento);
+int calcularPromedio(int sumaCantidades, int divisor, float * promedio);
+int calcularPorcentaje(int cantidadTotal, int cantidadPromedio, float * porcentaje);
+int calcularInteres(int precio, int porcentajeInteres, float * aumento, float * precioConInteres);
 
 #endif /* CALCULOS_H_ */
