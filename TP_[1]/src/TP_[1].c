@@ -55,10 +55,6 @@ int main(void) {
 	int menu;
 	int submenuCostos;
 	int retornoMenu;
-	int costoHospedaje;
-	int costoComida;
-	int costoTransporte;
-	int costoMantenimiento;
 	int submenuPosicion;
 	int arqueros;
 	int defensores;
@@ -79,6 +75,10 @@ int main(void) {
 	int flagCostoTransporte;
 	int flagJugadores;
 	int flagCalculos;
+	float costoHospedaje;
+	float costoComida;
+	float costoTransporte;
+	float costoMantenimiento;
 	float porcentajeAfc;
 	float porcentajeCaf;
 	float porcentajeConcacaf;
@@ -118,9 +118,9 @@ int main(void) {
 		printf("-----------------------------------------------------\n"
 			   "Menu Principal\n\n"
 			   "1. Ingreso de los costos de mantenimiento\n"
-			   "   -Costo de hospedaje -> $%d\n"
-			   "   -Costo de comida -> $%d\n"
-			   "   -Costo de transporte -> $%d\n"
+			   "   -Costo de hospedaje -> $%.2f\n"
+			   "   -Costo de comida -> $%.2f\n"
+			   "   -Costo de transporte -> $%.2f\n"
 			   "2. Carga de jugadores\n"
 			   "   -Arqueros -> %d\n"
 			   "   -Defensores -> %d\n"
@@ -139,30 +139,30 @@ int main(void) {
 				case 1:
 					do{
 						printf("\nMenu Secundario Costos\n\n"
-							   "1. Costo de hospedaje (MAX: $5000000 - MIN: $50000) -> $%d\n"
-							   "2. Costo de comida (MAX: $50000 - MIN: $50) -> $%d\n"
-							   "3. Costo de transporte (MAX: $5000000 - MIN: $50000) -> $%d\n"
+							   "1. Costo de hospedaje (MAX: $5000000 - MIN: $50000) -> $%.2f\n"
+							   "2. Costo de comida (MAX: $50000 - MIN: $50) -> $%.2f\n"
+							   "3. Costo de transporte (MAX: $5000000 - MIN: $50000) -> $%.2f\n"
 							   "4. Volver\n"
 							   ,costoHospedaje, costoComida, costoTransporte);
 						if(!utn_getInt(&submenuCostos, "   Ingrese opcion: ", "   \nOPCION NO VALIDA\n",
 								       MIN_MENU_COSTOS, MAX_MENU_COSTOS, REINTENTOS_MENU_COSTOS)){
 							switch(submenuCostos){
 								case 1:
-									if(!utn_getInt(&costoHospedaje, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
+									if(!utn_getFloat(&costoHospedaje, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
 												   MIN_COSTOS_HOSPEDAJE, MAX_COSTOS_HOSPEDAJE, REINTENTOS_COSTOS_HOSPEDAJE)){
 										printf(MENSAJE_CORRECTO);
 										flagCostoHospedaje = 1;
 									}
 									break;
 								case 2:
-									if(!utn_getInt(&costoComida, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
+									if(!utn_getFloat(&costoComida, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
 												   MIN_COSTOS_COMIDA, MAX_COSTOS_COMIDA, REINTENTOS_COSTOS_COMIDA)){
 										printf(MENSAJE_CORRECTO);
 										flagCostoComida = 1;
 									}
 									break;
 								case 3:
-									if(!utn_getInt(&costoTransporte, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
+									if(!utn_getFloat(&costoTransporte, "   Ingrese precio: $", "   \nMONTO INCORRECTO\n",
 												   MIN_COSTOS_TRANSPORTE, MAX_COSTOS_TRANSPORTE, REINTENTOS_COSTOS_TRANSPORTE)){
 										printf(MENSAJE_CORRECTO);
 										flagCostoTransporte = 1;
@@ -299,7 +299,7 @@ int main(void) {
 							   "   -Promedio CONMEBOL -> %.2f /  Porcentaje CONMEBOL -> %.2f\n"
 							   "   -Promedio UEFA -> %.2f /  Porcentaje UEFA -> %.2f\n"
 							   "   -Promedio OFC -> %.2f /  Porcentaje OFC -> %.2f\n"
-							   "   -Costo de mantenimiento -> $%d\n"
+							   "   -Costo de mantenimiento -> $%.2f\n"
 							   , promedioAfc, porcentajeAfc, promedioCaf, porcentajeCaf, promedioConcacaf, porcentajeConcacaf
 							   , promedioConmebol, porcentajeConmebol, promedioUefa, porcentajeUefa, promedioOfc, porcentajeOfc
 							   , costoMantenimiento);

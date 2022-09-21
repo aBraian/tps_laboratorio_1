@@ -2,7 +2,7 @@
  * calculos.c
  *
  *  Created on: 16 sep. 2022
- *      Author: braia
+ *      Author: braian
  */
 
 #include <stdio.h>
@@ -30,13 +30,13 @@ int calcularPorcentaje(int cantidadTotal, int cantidadPromedio, float * porcenta
 	return retorno;
 }
 
-int calcularInteres(int precio, int porcentajeInteres, float * aumento, float * precioConInteres){
+int calcularInteres(float precio, int porcentajeInteres, float * aumento, float * precioConInteres){
 	int retorno;
 	float aumentoNoAplicado;
 	float precioConAumento;
 	retorno = -1;
 	if(aumento != NULL && precioConInteres != NULL){
-		aumentoNoAplicado = (float)precio * porcentajeInteres / 100;
+		aumentoNoAplicado = precio * porcentajeInteres / 100;
 		precioConAumento = precio + aumentoNoAplicado;
 		*aumento = aumentoNoAplicado;
 		*precioConInteres = precioConAumento;
