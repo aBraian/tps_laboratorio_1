@@ -12,6 +12,8 @@
 int main(void) {
 	setbuf(stdout, NULL);
 	int menuPrincipal;
+	int flagSalida;
+	char respuesta[3];
 	eConfederacion confederaciones[6];
 	eJugador jugadores[6];
 	inicializarConfederaciones(confederaciones, 6);
@@ -25,34 +27,47 @@ int main(void) {
 			   "4. INFORMES\n"
 			   "5. SALIR\n"
 			   "\n");
-		if(utn_getInt(&menuPrincipal, "OPCION: ", "OPCION NO VALIDA\n", 1, 5, 1) == 0){
+		if(utn_getInt(&menuPrincipal, "OPCION: ", "OPCION NO VALIDA\n\n", 1, 5, 1) == 0){
 			switch(menuPrincipal){
 				case 1:
 					printf("\n");
-					altaJugadores(confederaciones, 6, jugadores, 6);
+					if(altaJugadores(confederaciones, 6, jugadores, 6) == 0){
+						contadorIdJugadores(ALTA);
+					}
 					printf("\n");
 					break;
 				case 2:
 					printf("\n");
-					printf("Numero de Opcion: %d\n", menuPrincipal);
+					bajaJugadores(confederaciones, 6, jugadores, 6);
 					printf("\n");
 					break;
 				case 3:
 					printf("\n");
-					printf("Numero de Opcion: %d\n", menuPrincipal);
+					modificarJugadores(confederaciones, 6, jugadores, 6);
 					printf("\n");
 					break;
 				case 4:
 					printf("\n");
-					printf("Numero de Opcion: %d\n", menuPrincipal);
+					listarJugadores(confederaciones, 6,jugadores, 6);
 					printf("\n");
 					break;
 				case 5:
 					printf("\n");
-					printf("SALIO CORRECTAMENTE");
+					do{
+						flagSalida = 0;
+						if(utn_getString(respuesta, 3, "Desea salir (SI/NO): ", "ERROR\n", 1) == 0){
+							convertirEnMinuscula(respuesta, 3);
+							if(strcmp(respuesta, "si") != 0 && strcmp(respuesta, "no") != 0){
+								flagSalida = 1;
+								printf("INGRESE 'SI' O 'NO'\n");
+							}
+						}
+					}while(flagSalida);
+					printf("\n");
 					break;
 			}
 		}
-	}while(menuPrincipal != 5);
+	}while(menuPrincipal != 5 || strcmp(respuesta, "no") == 0);
+	printf("SALIO CORRECTAMENTE");
 	return EXIT_SUCCESS;
 }

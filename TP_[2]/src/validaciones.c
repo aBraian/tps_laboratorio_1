@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 /// @brief Solicita un numero al usuario y verifica que sea de tipo entero
 ///
@@ -230,4 +231,11 @@ static int myGets(char *cadena, int longitud){
 		retorno = 0;
 	}
 	return retorno;
+}
+
+void convertirEnMinuscula(char cadena[], int longitud){
+	int i;
+	for(i = 0; i < longitud; i++){
+		cadena[i] = tolower(cadena[i]);
+	}
 }

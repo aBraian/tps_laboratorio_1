@@ -88,7 +88,7 @@ int listarConfederaciones(eConfederacion confederaciones[], int longitud){
 	return retorno;
 }
 
-int encontrarIdConfederacion(eConfederacion confederaciones[], int longitud, int idBuscada){
+int buscarIdConfederacion(eConfederacion confederaciones[], int longitud, int idBuscada){
 	int retorno;
 	int i;
 	retorno = -1;
@@ -109,8 +109,8 @@ int selecionarConfederacion(eConfederacion confederaciones[], int longitud){
 	int validacionId;
 	retorno = -1;
 	if(confederaciones != NULL && longitud > 0 && listarConfederaciones(confederaciones, longitud) == 0 &&
-	   utn_getInt(&bufferId, "Ingrese ID confederacion: ", "ID ERRONEA", 100, 105, 2) == 0){
-		validacionId = encontrarIdConfederacion(confederaciones, longitud, bufferId);
+	   utn_getInt(&bufferId, "Ingrese ID confederacion: ", "ID ERRONEA\n", 100, 105, 2) == 0){
+		validacionId = buscarIdConfederacion(confederaciones, longitud, bufferId);
 		if(validacionId != -1){
 			retorno = validacionId;
 		}

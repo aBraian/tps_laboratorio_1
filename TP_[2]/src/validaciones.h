@@ -40,4 +40,6 @@ int utn_getFloat(float *pResultado, char *mensaje, char *mensajeError, int minim
 /// @return Retorna 0 si se obtuvo la cadena y -1 si no
 int utn_getString(char pResultado[], int longitudArray, char * mensaje, char * mensajeError, int reintentos);
 
+void convertirEnMinuscula(char cadena[], int longitud);
+
 #endif /* VALIDACIONES_H_ */
