@@ -6,14 +6,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "confederacion.h"
+#include "informes.h"
+#include "ingresoDatos.h"
 #include "jugador.h"
-#include "validaciones.h"
 
 int main(void) {
 	setbuf(stdout, NULL);
 	int menuPrincipal;
-	int flagSalida;
-	char respuesta[3];
+	int respuesta;
 	eConfederacion confederaciones[6];
 	eJugador jugadores[6];
 	inicializarConfederaciones(confederaciones, 6);
@@ -48,26 +48,17 @@ int main(void) {
 					break;
 				case 4:
 					printf("\n");
-					listarJugadores(confederaciones, 6,jugadores, 6);
+					submenuInformes(confederaciones, 6, jugadores, 6);
 					printf("\n");
 					break;
 				case 5:
 					printf("\n");
-					do{
-						flagSalida = 0;
-						if(utn_getString(respuesta, 3, "Desea salir (SI/NO): ", "ERROR\n", 1) == 0){
-							convertirEnMinuscula(respuesta, 3);
-							if(strcmp(respuesta, "si") != 0 && strcmp(respuesta, "no") != 0){
-								flagSalida = 1;
-								printf("INGRESE 'SI' O 'NO'\n");
-							}
-						}
-					}while(flagSalida);
+					respuesta = salirMenu();
 					printf("\n");
 					break;
 			}
 		}
-	}while(menuPrincipal != 5 || strcmp(respuesta, "no") == 0);
+	}while(menuPrincipal != 5 || respuesta == -1);
 	printf("SALIO CORRECTAMENTE");
 	return EXIT_SUCCESS;
 }

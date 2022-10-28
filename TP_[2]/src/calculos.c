@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int calcularPromedio(int sumaCantidades, int divisor, float * promedio){
+int calcularPromedio(int sumaCantidades, int divisor, float *promedio){
 	int retorno;
 	float bufferPromedio;
 	retorno = -1;
@@ -20,7 +20,7 @@ int calcularPromedio(int sumaCantidades, int divisor, float * promedio){
 	return retorno;
 }
 
-int calcularPorcentaje(int cantidadTotal, int cantidadPromedio, float * porcentaje){
+int calcularPorcentaje(int cantidadTotal, int cantidadPromedio, float *porcentaje){
 	int retorno;
 	retorno = -1;
 	if(porcentaje != NULL && cantidadTotal != 0){
@@ -30,7 +30,7 @@ int calcularPorcentaje(int cantidadTotal, int cantidadPromedio, float * porcenta
 	return retorno;
 }
 
-int calcularInteres(float precio, int porcentajeInteres, float * aumento, float * precioConInteres){
+int calcularInteres(float precio, int porcentajeInteres, float *aumento, float *precioConInteres){
 	int retorno;
 	float aumentoNoAplicado;
 	float precioConAumento;
@@ -40,6 +40,16 @@ int calcularInteres(float precio, int porcentajeInteres, float * aumento, float 
 		precioConAumento = precio + aumentoNoAplicado;
 		*aumento = aumentoNoAplicado;
 		*precioConInteres = precioConAumento;
+		retorno = 0;
+	}
+	return retorno;
+}
+
+int acumularSalarios(float salarios, float *total){
+	int retorno;
+	retorno = -1;
+	if(salarios > 0 && total != NULL){
+		*total += salarios;
 		retorno = 0;
 	}
 	return retorno;

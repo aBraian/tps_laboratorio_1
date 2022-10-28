@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "confederacion.h"
+#include "ingresoDatos.h"
 #include "jugador.h"
-#include "validaciones.h"
 
 int incrementarIdJugadores(){
 	static int idJugadores = 0;
@@ -45,11 +45,11 @@ int listarJugadores(eConfederacion confederaciones[], int longitudConfederacione
 	int x;
 	retorno = -1;
 	if(confederaciones != NULL && longitudConfederaciones > 0 && jugadores != NULL && longitudJugadores > 0){
-		printf("|====================================================================================================================|"
+		printf("======================================================================================================================"
 			   "\n"
 			   "|%-116s|"
 			   "\n"
-			   "|--------------------------------------------------------------------------------------------------------------------|"
+			   "----------------------------------------------------------------------------------------------------------------------"
 			   "\n"
 			   "|%-6s|%-30s|%-15s|%-13s|%-12s|%-15s|%-19s|\n"
 			   , "Listado Jugadores","ID", "NOMBRE", "POSICION", "N° CAMISETA", "SUELDO", "CONFEDERACION", "ANIOS de CONTRATO");
@@ -63,7 +63,7 @@ int listarJugadores(eConfederacion confederaciones[], int longitudConfederacione
 			}
 		}
 		retorno = 0;
-		printf("|====================================================================================================================|"
+		printf("======================================================================================================================"
 			   "\n");
 	}
 	return retorno;
@@ -129,7 +129,6 @@ int altaJugadores(eConfederacion confederaciones[], int longitudConfederaciones,
 	int indiceConfederacion;
 	int bufferCamiseta;
 	int bufferContrato;
-	int validacionPosicion;
 	int flagPosicion;
 	float bufferSalario;
 	char bufferNombre[LONGITUD_NOMBRE];
@@ -143,19 +142,19 @@ int altaJugadores(eConfederacion confederaciones[], int longitudConfederaciones,
 		   utn_getFloat(&bufferSalario, "Ingrese salario: $", "PRECIO NO VALIDO(MINIMO 37000 - MAXIMO 4750000)\n", 37000, 4750000, 2) == 0 &&
 		   utn_getString(bufferNombre, LONGITUD_NOMBRE, "Ingrese nombre: ", "ERROR\n", 2) == 0){
 			do{
-				flagPosicion = 0;
-				validacionPosicion = utn_getString(bufferPosicion, 15, "Ingrese posicion: ", "ERROR\n", 1);
-				convertirEnMinuscula(bufferPosicion, 15);
-				if(strcmp(bufferPosicion, "arquero") != 0 && strcmp(bufferPosicion, "defensor") != 0 && strcmp(bufferPosicion, "mediocampista") != 0 &&
-				   strcmp(bufferPosicion, "delantero") != 0){
-					flagPosicion = 1;
-					printf("POSICIONES: ARQUERO-DEFENSOR-MEDIOCAMPISTA-DELANTERO\n");
+				if(utn_getString(bufferPosicion, 15, "Ingrese posicion: ", "ERROR\n", 1) == 0 && convertirEnMinuscula(bufferPosicion, 15) == 0){
+					flagPosicion = 0;
+					if(strcmp(bufferPosicion, "arquero") != 0 && strcmp(bufferPosicion, "defensor") != 0 && strcmp(bufferPosicion, "mediocampista") != 0 &&
+					   strcmp(bufferPosicion, "delantero") != 0){
+						flagPosicion = 1;
+						printf("POSICIONES: ARQUERO-DEFENSOR-MEDIOCAMPISTA-DELANTERO\n");
+					}
 				}
 			}while(flagPosicion);
 			printf("\n");
 			indiceConfederacion = selecionarConfederacion(confederaciones, longitudConfederaciones);
 			printf("\n");
-			if(indiceConfederacion != -1 && validacionPosicion == 0){
+			if(indiceConfederacion != -1){
 				jugadores[indiceVacio].numeroCamiseta = (short)bufferCamiseta;
 				jugadores[indiceVacio].aniosContrato = (short)bufferContrato;
 				jugadores[indiceVacio].salario = bufferSalario;
@@ -246,54 +245,71 @@ int modificarJugadores(eConfederacion confederaciones[], int longitudConfederaci
 				case 1:
 					if(utn_getString(bufferNombre, LONGITUD_NOMBRE, "Ingrese nombre: ", "ERROR\n", 2) == 0){
 						strcpy(jugadores[indiceIdBuscada].nombre, bufferNombre);
+						printf("\nCAMBIOS APLICADOS\n");
+					}
+					else{
+						printf("\nCAMBIOS NO APLICADOS\n");
 					}
 					break;
 				case 2:
 					do{
-						flagPosicion = 0;
-						if(utn_getString(bufferPosicion, 15, "Ingrese posicion: ", "ERROR\n", 1) == 0){
-							convertirEnMinuscula(bufferPosicion, 15);
-							if(strcmp(bufferPosicion, "arquero") != 0 && strcmp(bufferPosicion, "defensor") != 0 && strcmp(bufferPosicion, "mediocampista") != 0 &&
-							   strcmp(bufferPosicion, "delantero") != 0){
+						if(utn_getString(bufferPosicion, 15, "Ingrese posicion: ", "ERROR\n", 1) == 0 &&
+						   convertirEnMinuscula(bufferPosicion, 15) == 0){
+							flagPosicion = 0;
+							if(strcmp(bufferPosicion, "arquero") != 0 && strcmp(bufferPosicion, "defensor") != 0 &&
+							   strcmp(bufferPosicion, "mediocampista") != 0 && strcmp(bufferPosicion, "delantero") != 0){
 								flagPosicion = 1;
-								printf("POSICIONES: ARQUERO-DEFENSOR-MEDIOCAMPISTA-DELANTERO\n");
+								printf("\nPOSICIONES: ARQUERO-DEFENSOR-MEDIOCAMPISTA-DELANTERO\n");
 							}
 							else{
 								strcpy(jugadores[indiceIdBuscada].posicion, bufferPosicion);
+								printf("\nCAMBIOS APLICADOS\n");
 							}
+						}
+						else{
+							printf("\nCAMBIOS NO APLICADOS\n\n");
 						}
 					}while(flagPosicion);
 					break;
 				case 3:
 					if(utn_getInt(&bufferCamiseta, "Ingrese numero de camiseta: ", "NUMERO NO VALIDO (MINIMO 1 - MAXIMO 99)\n", 1, 99, 2) == 0){
 						jugadores[indiceIdBuscada].numeroCamiseta = (short)bufferCamiseta;
+						printf("\nCAMBIOS APLICADOS\n");
+					}
+					else{
+						printf("\nCAMBIOS NO APLICADOS\n");
 					}
 					break;
 				case 4:
 					indiceConfederacion = selecionarConfederacion(confederaciones, longitudConfederaciones);
 					if(indiceConfederacion != -1){
 						jugadores[indiceIdBuscada].idConfederacion = confederaciones[indiceConfederacion].id;
+						printf("\nCAMBIOS APLICADOS\n");
+					}
+					else{
+						printf("\nCAMBIOS NO APLICADOS\n");
 					}
 					break;
 				case 5:
 					if(utn_getFloat(&bufferSalario, "Ingrese salario: $", "PRECIO NO VALIDO(MINIMO 37000 - MAXIMO 4750000)\n", 37000, 4750000, 2) == 0){
 						jugadores[indiceIdBuscada].salario = bufferSalario;
+						printf("\nCAMBIOS APLICADOS\n");
+					}
+					else{
+						printf("\nCAMBIOS NO APLICADOS\n");
 					}
 					break;
 				case 6:
 					if(utn_getInt(&bufferContrato, "Ingrese anios de contrato: ", "ANIO NO VALIDO (MINIMO 1 - MAXIMO 10)\n", 1, 10, 2) == 0){
 						jugadores[indiceIdBuscada].aniosContrato = (short)bufferContrato;
+						printf("\nCAMBIOS APLICADOS\n");
+					}
+					else{
+						printf("\nCAMBIOS NO APLICADOS\n");
 					}
 					break;
 				}
-				printf("CAMBIOS APLICADOS\n");
 			}
-			else{
-				printf("CAMBIOS NO APLICADOS\n");
-			}
-		}
-		else{
-			printf("CAMBIOS NO APLICADOS\n");
 		}
 	}
 	return retorno;

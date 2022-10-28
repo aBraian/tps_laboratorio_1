@@ -39,13 +39,13 @@ static int isFloat(char *cadena);
 /// @param pResultado Array donde se dejara el resultado de la funcion
 /// @param longitudArray Tamaño del array
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int getString(char * pResultado, int longitudArray);
+static int getString(char *pResultado, int longitudArray);
 
 /// @brief Valida que lo ingresado sea de tipo cadena de caracteres
 ///
 /// @param cadena Cadena que se recorre validando que sean caracteres permitidos por una cadena de caracteres
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int isString(char * cadena);
+static int isString(char *cadena);
 
 /// @brief Toma los datos de manera segura
 ///
@@ -233,9 +233,36 @@ static int myGets(char *cadena, int longitud){
 	return retorno;
 }
 
-void convertirEnMinuscula(char cadena[], int longitud){
+int convertirEnMinuscula(char cadena[], int longitud){
 	int i;
-	for(i = 0; i < longitud; i++){
-		cadena[i] = tolower(cadena[i]);
+	int retorno;
+	retorno = -1;
+	if(cadena != NULL && longitud > 0){
+		for(i = 0; i < longitud; i++){
+			cadena[i] = tolower(cadena[i]);
+		}
+		retorno = 0;
 	}
+	return retorno;
+}
+
+int salirMenu(void){
+	int retorno;
+	int flagSalida;
+	char respuesta[3];
+	retorno = -1;
+	do{
+		if(utn_getString(respuesta, 3, "Desea salir (SI/NO): ", "ERROR\n", 1) == 0 &&
+		   convertirEnMinuscula(respuesta, 3) == 0){
+			flagSalida = 0;
+			if(strcmp(respuesta, "si") != 0 && strcmp(respuesta, "no") != 0){
+				flagSalida = 1;
+				printf("\nINGRESE 'SI' O 'NO'\n\n");
+			}
+			else if(strcmp(respuesta, "si") == 0){
+				retorno = 0;
+			}
+		}
+	}while(flagSalida);
+	return retorno;
 }

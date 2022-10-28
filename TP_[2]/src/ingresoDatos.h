@@ -5,8 +5,8 @@
  *      Author: braian
  */
 
-#ifndef VALIDACIONES_H_
-#define VALIDACIONES_H_
+#ifndef INGRESODATOS_H_
+#define INGRESODATOS_H_
 
 /// @brief Solicita un numero entero al usuario, luego de verificarlo devuelve el resultado
 ///
@@ -40,6 +40,8 @@ int utn_getFloat(float *pResultado, char *mensaje, char *mensajeError, int minim
 /// @return Retorna 0 si se obtuvo la cadena y -1 si no
 int utn_getString(char pResultado[], int longitudArray, char * mensaje, char * mensajeError, int reintentos);
 
-void convertirEnMinuscula(char cadena[], int longitud);
+int convertirEnMinuscula(char cadena[], int longitud);
 
-#endif /* VALIDACIONES_H_ */
+int salirMenu(void);
+
+#endif /* INGRESODATOS_H_ */

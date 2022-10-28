@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "confederacion.h"
+#include "ingresoDatos.h"
 #include "jugador.h"
-#include "validaciones.h"
 
 int incrementarIdConfederaciones(){
 	static int idConfederacion = 99;
@@ -29,32 +29,32 @@ int inicializarConfederaciones(eConfederacion confederaciones[], int longitud){
 				case 0:
 					confederaciones[i].anioCreacion = 1954;
 					strcpy(confederaciones[i].nombre, "AFC");
-					strcpy(confederaciones[i].region, "ASIA");
+					strcpy(confederaciones[i].region, "Asia");
 					break;
 				case 1:
 					confederaciones[i].anioCreacion = 1957;
 					strcpy(confederaciones[i].nombre, "CAF");
-					strcpy(confederaciones[i].region, "AFRICA");
+					strcpy(confederaciones[i].region, "Africa");
 					break;
 				case 2:
 					confederaciones[i].anioCreacion = 1966;
 					strcpy(confederaciones[i].nombre, "OFC");
-					strcpy(confederaciones[i].region, "OCEANIA");
+					strcpy(confederaciones[i].region, "Oceania");
 					break;
 				case 3:
 					confederaciones[i].anioCreacion = 1954;
 					strcpy(confederaciones[i].nombre, "UEFA");
-					strcpy(confederaciones[i].region, "EUROPA");
+					strcpy(confederaciones[i].region, "Europa");
 					break;
 				case 4:
 					confederaciones[i].anioCreacion = 1961;
 					strcpy(confederaciones[i].nombre, "CONCACAF");
-					strcpy(confederaciones[i].region, "NORTE Y CENTRO AMERICA");
+					strcpy(confederaciones[i].region, "Norte y Centro America");
 					break;
 				case 5:
 					confederaciones[i].anioCreacion = 1916;
 					strcpy(confederaciones[i].nombre, "CONMEBOL");
-					strcpy(confederaciones[i].region, "SUDAMERICA");
+					strcpy(confederaciones[i].region, "Sudamerica");
 					break;
 			}
 		}
@@ -68,11 +68,11 @@ int listarConfederaciones(eConfederacion confederaciones[], int longitud){
 	int i;
 	retorno = -1;
 	if(confederaciones != NULL && longitud > 0){
-		printf("|========================================================|"
+		printf("=========================================================="
 			   "\n"
 			   "|%-56s|"
 			   "\n"
-			   "|--------------------------------------------------------|"
+			   "----------------------------------------------------------"
 			   "\n"
 			   "|%-5s|%-10s|%-24s|%-14s|\n"
 			   , "Listado Confederaciones","ID", "NOMBRE", "REGION", "ANO CREACION");
@@ -82,7 +82,7 @@ int listarConfederaciones(eConfederacion confederaciones[], int longitud){
 				   , confederaciones[i].region, confederaciones[i].anioCreacion);
 		}
 		retorno = 0;
-		printf("|========================================================|"
+		printf("=========================================================="
 			   "\n");
 	}
 	return retorno;
