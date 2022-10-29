@@ -8,6 +8,8 @@
 #ifndef CALCULOS_H_
 #define CALCULOS_H_
 
+#include "jugador.h"
+
 /// @brief Recibe la suma de varias cantidades y lo divide por el número de sumandos
 /// 	   y devuelve por referencia el promedio calculado
 ///
@@ -35,5 +37,17 @@ int calcularPorcentaje(int cantidadTotal, int cantidadPromedio, float *porcentaj
 /// @return Retorna 0 (EXITO) si obtiene el aumento y el precio con interes o -1 (ERROR) si no
 int calcularInteres(float precio, int porcentajeInteres, float *aumento, float *precioConInteres);
 int acumularSalarios(float salarios, float *total);
+
+int acumularSalariosJugadores(eJugador jugadores[], int longitudJugadores, float *pTotalSalarios);
+int contadorJugadores(eJugador jugadores[], int longitudJugadores, int *pContador);
+int calcularPromedioSalarios(eJugador jugadores[], int longitudJugadores, float *pPromedio);
+int salariosMayorPromedio(eJugador jugadores[], int longitudJugadores, int *pCantidadSalarios);
+int acumularAniosContratoConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pTotalAnios);
+int confederacionMasAniosContrato(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int *pCantidadAnios);
+int acumularAniosContratoConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pTotalAnios);
+int contadorJugadoresConfederacion(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pContador);
+int calcularPorcentajeJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, float *pPorcentaje);
+int contadorJugadoresRegion(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pContador);
+int regionMasJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores);
 
 #endif /* CALCULOS_H_ */

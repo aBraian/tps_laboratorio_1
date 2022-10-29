@@ -8,6 +8,8 @@
 #ifndef CONFEDERACION_H_
 #define CONFEDERACION_H_
 
+#define LIMITE_CONFEDERACIONES 6
+
 typedef struct{
 	int id;
 	int anioCreacion;

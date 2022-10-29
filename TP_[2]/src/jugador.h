@@ -8,13 +8,17 @@
 #ifndef JUGADOR_H_
 #define JUGADOR_H_
 
+#include "confederacion.h"
+
 #define VACIO 1
 #define LLENO 0
 #define ALTA 1
 #define BAJA 0
 #define LONGITUD_NOMBRE 30
 #define MENSAJE_EXITO "SE DIO DE ALTA - DATOS BIEN INGRESADOS\n"
-#define MENSAJE_ERROR "NO SE DIO DE ALTA - DATOS MAL INGRESADOS\n"
+#define MENSAJE_ERROR "\nNO SE DIO DE ALTA - DATOS MAL INGRESADOS\n"
+#define LIMITE_JUGADORES 3000
+#define ADVERTENCIA_JUGADORES "ANTES SE DEBE DAR DE ALTA UN JUGADOR\n"
 
 typedef struct{
 	short isEmpty;

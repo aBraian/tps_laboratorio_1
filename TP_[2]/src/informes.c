@@ -98,79 +98,6 @@ int listarConfederacionesConJugadores(eConfederacion confederaciones[], int long
 	return retorno;
 }
 
-int acumularSalariosJugadores(eJugador jugadores[], int longitudJugadores, float *totalSalarios){
-	int retorno;
-	int i;
-	float bufferSalarios;
-	retorno = -1;
-	if(jugadores != NULL && longitudJugadores > 0 && totalSalarios != NULL){
-		for(i = 0; i < longitudJugadores; i++){
-			if(jugadores[i].isEmpty == LLENO){
-				bufferSalarios += jugadores[i].salario;
-			}
-		}
-		*totalSalarios = bufferSalarios;
-		retorno = 0;
-	}
-	return retorno;
-}
-
-int contadorJugadores(eJugador jugadores[], int longitudJugadores, int *contador){
-	int retorno;
-	int i;
-	int bufferContador;
-	retorno = -1;
-	bufferContador = 0;
-	if(jugadores != NULL && longitudJugadores > 0 && contador != NULL){
-		for(i = 0; i < longitudJugadores; i++){
-			if(jugadores[i].isEmpty == LLENO){
-				bufferContador++;
-			}
-		}
-		*contador = bufferContador;
-		retorno = 0;
-	}
-	return retorno;
-}
-
-int calcularPromedioSalarios(eJugador jugadores[], int longitudJugadores, float *pPromedio){
-	int retorno;
-	int bufferContador;
-	float bufferSalario;
-	retorno = -1;
-	if(jugadores != NULL && longitudJugadores > 0 && pPromedio != NULL &&
-	   acumularSalariosJugadores(jugadores, longitudJugadores, &bufferSalario) == 0 &&
-	   contadorJugadores(jugadores, longitudJugadores, &bufferContador) == 0 &&
-	   bufferSalario > 0 && bufferContador > 0){
-		*pPromedio = bufferSalario / bufferContador;
-		retorno = 0;
-	}
-	return retorno;
-}
-
-int salariosMayorPromedio(eJugador jugadores[], int longitudJugadores, int *pCantidadSalarios){
-	int retorno;
-	int contadorSalarios;
-	int i;
-	int auxiliar;
-	float promedioSalarios;
-	retorno = -1;
-	contadorSalarios = 0;
-	if(jugadores != NULL && longitudJugadores > 0 && pCantidadSalarios != NULL &&
-	   calcularPromedioSalarios(jugadores, longitudJugadores, &promedioSalarios) == 0){
-		for(i = 0; i < longitudJugadores; i++){
-			if(jugadores[i].isEmpty == LLENO &&
-			   jugadores[i].salario > promedioSalarios){
-				contadorSalarios++;
-			}
-		}
-		auxiliar = contadorSalarios;
-		*pCantidadSalarios = auxiliar;
-		retorno = 0;
-	}
-	return retorno;
-}
-
 int listarSalarios(eJugador jugadores[], int longitudJugadores){
 	int retorno;
 	int cantidadSalarios;
@@ -201,6 +128,87 @@ int listarSalarios(eJugador jugadores[], int longitudJugadores){
 	return retorno;
 }
 
+int listarConfederacionMasAniosContrato(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores){
+	int retorno;
+	int auxIndice;
+	int cantidadAnios;
+	retorno = -1;
+	if(confederaciones != NULL && longitudConfederaciones > 0 && jugadores != NULL && longitudJugadores > 0){
+		auxIndice = confederacionMasAniosContrato(confederaciones, longitudConfederaciones, jugadores, longitudJugadores, &cantidadAnios);
+		if(auxIndice != -1){
+			printf("================================================="
+				   "\n"
+				   "|%-47s|"
+				   "\n"
+				   "-------------------------------------------------"
+				   "\n"
+				   "|%-15s|%-31s|\n"
+				   "|%-15s|%-31d|\n"
+				   , "Listado Confederacion con mas Anios de Contrato", "CONFEDERACION", "CANTIDAD ANIOS"
+				   , confederaciones[auxIndice].nombre, cantidadAnios);
+			printf("================================================="
+				   "\n");
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+int listarPorcentajeConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores){
+	int retorno;
+	int i;
+	float bufferPorcentaje;
+	retorno = -1;
+	if(confederaciones != NULL && longitudConfederaciones > 0 && jugadores != NULL && longitudJugadores > 0){
+		printf("======================================================"
+			   "\n"
+			   "|%-52s|"
+			   "\n"
+			   "------------------------------------------------------"
+			   "\n"
+			   "|%-15s|%-36s|\n"
+			   , "Listado de Porcentaje de Jugadores por Confederacion", "CONFEDERACION", "PORCENTAJE");
+		for(i = 0; i < longitudConfederaciones; i++){
+			if(calcularPorcentajeJugadores(confederaciones, longitudConfederaciones, jugadores, longitudJugadores, i, &bufferPorcentaje) == 0){
+				printf("|%-15s|%%%-35.2f|\n", confederaciones[i].nombre, bufferPorcentaje);
+			}
+		}
+		retorno = 0;
+		printf("======================================================"
+			   "\n");
+	}
+	return retorno;
+}
+
+int listarRegionMasJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores){
+	int retorno;
+	int i;
+	int auxIndice;
+	retorno = -1;
+	if(confederaciones != NULL && longitudConfederaciones > 0 && jugadores != NULL && longitudJugadores > 0){
+		printf("======================================================"
+			   "\n"
+			   "|%-52s|"
+			   "\n"
+			   "------------------------------------------------------"
+			   "\n"
+			   "|%-24s|%-27s|\n"
+			   , "Listado de Region con mas Jugadores", "REGION", "NOMBRE JUGADOR");
+		auxIndice = regionMasJugadores(confederaciones, longitudConfederaciones, jugadores, longitudJugadores);
+		if(auxIndice != -1){
+			for(i = 0; i < longitudJugadores; i++){
+				if(jugadores[i].isEmpty == LLENO && confederaciones[auxIndice].id == jugadores[i].idConfederacion){
+					printf("|%-24s|%-27s|\n", confederaciones[auxIndice].region, jugadores[i].nombre);
+				}
+			}
+		}
+		retorno = 0;
+		printf("======================================================"
+			   "\n");
+	}
+	return retorno;
+}
+
 int submenuInformes(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores){
 	int retorno;
 	int submenu;
@@ -209,18 +217,19 @@ int submenuInformes(eConfederacion confederaciones[], int longitudConfederacione
 		do{
 			printf("FIFA - Submenu Informes\n"
 				   "\n"
-				   "1. Listado de los jugadores ordenados alfabéticamente por nombre de confederación y nombre de jugador\n"
+				   "1. Listado de los jugadores ordenados alfabeticamente por nombre de confederacion y nombre de jugador\n"
 				   "2. Listado de confederaciones con sus jugadores\n"
-				   "3. Total y promedio de todos los salarios y cuántos jugadores cobran más del salario promedio\n"
-				   "4. Informar la confederación con mayor cantidad de años de contratos total\n"
-				   "5. Informar porcentaje de jugadores por cada confederación\n"
-				   "6. Informar cual es la región con más jugadores y el listado de los mismos\n"
+				   "3. Total y promedio de todos los salarios y cuantos jugadores cobran mas del salario promedio\n"
+				   "4. Informar la confederacion con mayor cantidad de anios de contratos total\n"
+				   "5. Informar porcentaje de jugadores por cada confederacion\n"
+				   "6. Informar cual es la region con mas jugadores y el listado de los mismos\n"
 				   "7. Volver al menu principal\n"
 				   "\n");
 			if(utn_getInt(&submenu, "OPCION: ", "OPCION NO VALIDA\n", 1, 7, 2) == 0){
 				switch(submenu){
 					case 1:
 						printf("\n");
+						ordenarIdJugadores(jugadores, longitudJugadores);
 						ordenarNombres(confederaciones, longitudConfederaciones, jugadores, longitudJugadores);
 						listarJugadores(confederaciones, longitudConfederaciones, jugadores, longitudJugadores);
 						printf("\n");
@@ -237,23 +246,20 @@ int submenuInformes(eConfederacion confederaciones[], int longitudConfederacione
 						break;
 					case 4:
 						printf("\n");
-
+						listarConfederacionMasAniosContrato(confederaciones, longitudConfederaciones, jugadores, longitudJugadores);
 						printf("\n");
 						break;
 					case 5:
 						printf("\n");
-
+						listarPorcentajeConfederaciones(confederaciones, longitudConfederaciones, jugadores, longitudJugadores);
 						printf("\n");
 						break;
 					case 6:
 						printf("\n");
-
+						listarRegionMasJugadores(confederaciones, longitudConfederaciones, jugadores, longitudJugadores);
 						printf("\n");
 						break;
 					case 7:
-						printf("\n");
-						printf("REGRESO CORRECTAMENTE");
-						printf("\n");
 						break;
 				}
 			}

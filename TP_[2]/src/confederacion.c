@@ -68,21 +68,21 @@ int listarConfederaciones(eConfederacion confederaciones[], int longitud){
 	int i;
 	retorno = -1;
 	if(confederaciones != NULL && longitud > 0){
-		printf("=========================================================="
+		printf("==========================================================="
 			   "\n"
 			   "|%-56s|"
 			   "\n"
-			   "----------------------------------------------------------"
+			   "-----------------------------------------------------------"
 			   "\n"
-			   "|%-5s|%-10s|%-24s|%-14s|\n"
-			   , "Listado Confederaciones","ID", "NOMBRE", "REGION", "ANO CREACION");
+			   "|%-5s|%-10s|%-24s|%-15s|\n"
+			   , "Listado Confederaciones","ID", "NOMBRE", "REGION", "ANIO CREACION");
 		for(i = 0; i < longitud; i++){
-			printf("|%-5d|%-10s|%-24s|%-14d|\n"
+			printf("|%-5d|%-10s|%-24s|%-15d|\n"
 				   , confederaciones[i].id, confederaciones[i].nombre
 				   , confederaciones[i].region, confederaciones[i].anioCreacion);
 		}
 		retorno = 0;
-		printf("=========================================================="
+		printf("==========================================================="
 			   "\n");
 	}
 	return retorno;

@@ -199,11 +199,11 @@ int bajaJugadores(eConfederacion confederaciones[], int longitudConfederaciones,
 				printf("SE DIO DE BAJA - SE ENCONTRO LA ID INGRESADA\n");
 			}
 			else{
-				printf("NO SE DIO DE BAJA - NO SE ENCONTRO LA ID INGRESADA\n");
+				printf("\nNO SE DIO DE BAJA - NO SE ENCONTRO LA ID INGRESADA\n");
 			}
 		}
 		else{
-			printf("NO SE DIO DE BAJA - NO SE ENCONTRO LA ID INGRESADA\n");
+			printf("\nNO SE DIO DE BAJA - NO SE ENCONTRO LA ID INGRESADA\n");
 		}
 	}
 	return retorno;
@@ -245,7 +245,6 @@ int modificarJugadores(eConfederacion confederaciones[], int longitudConfederaci
 				case 1:
 					if(utn_getString(bufferNombre, LONGITUD_NOMBRE, "Ingrese nombre: ", "ERROR\n", 2) == 0){
 						strcpy(jugadores[indiceIdBuscada].nombre, bufferNombre);
-						printf("\nCAMBIOS APLICADOS\n");
 					}
 					else{
 						printf("\nCAMBIOS NO APLICADOS\n");
@@ -263,7 +262,6 @@ int modificarJugadores(eConfederacion confederaciones[], int longitudConfederaci
 							}
 							else{
 								strcpy(jugadores[indiceIdBuscada].posicion, bufferPosicion);
-								printf("\nCAMBIOS APLICADOS\n");
 							}
 						}
 						else{
@@ -274,7 +272,6 @@ int modificarJugadores(eConfederacion confederaciones[], int longitudConfederaci
 				case 3:
 					if(utn_getInt(&bufferCamiseta, "Ingrese numero de camiseta: ", "NUMERO NO VALIDO (MINIMO 1 - MAXIMO 99)\n", 1, 99, 2) == 0){
 						jugadores[indiceIdBuscada].numeroCamiseta = (short)bufferCamiseta;
-						printf("\nCAMBIOS APLICADOS\n");
 					}
 					else{
 						printf("\nCAMBIOS NO APLICADOS\n");
@@ -284,7 +281,6 @@ int modificarJugadores(eConfederacion confederaciones[], int longitudConfederaci
 					indiceConfederacion = selecionarConfederacion(confederaciones, longitudConfederaciones);
 					if(indiceConfederacion != -1){
 						jugadores[indiceIdBuscada].idConfederacion = confederaciones[indiceConfederacion].id;
-						printf("\nCAMBIOS APLICADOS\n");
 					}
 					else{
 						printf("\nCAMBIOS NO APLICADOS\n");
@@ -293,7 +289,6 @@ int modificarJugadores(eConfederacion confederaciones[], int longitudConfederaci
 				case 5:
 					if(utn_getFloat(&bufferSalario, "Ingrese salario: $", "PRECIO NO VALIDO(MINIMO 37000 - MAXIMO 4750000)\n", 37000, 4750000, 2) == 0){
 						jugadores[indiceIdBuscada].salario = bufferSalario;
-						printf("\nCAMBIOS APLICADOS\n");
 					}
 					else{
 						printf("\nCAMBIOS NO APLICADOS\n");
@@ -302,7 +297,6 @@ int modificarJugadores(eConfederacion confederaciones[], int longitudConfederaci
 				case 6:
 					if(utn_getInt(&bufferContrato, "Ingrese anios de contrato: ", "ANIO NO VALIDO (MINIMO 1 - MAXIMO 10)\n", 1, 10, 2) == 0){
 						jugadores[indiceIdBuscada].aniosContrato = (short)bufferContrato;
-						printf("\nCAMBIOS APLICADOS\n");
 					}
 					else{
 						printf("\nCAMBIOS NO APLICADOS\n");
@@ -310,6 +304,7 @@ int modificarJugadores(eConfederacion confederaciones[], int longitudConfederaci
 					break;
 				}
 			}
+			retorno = 0;
 		}
 	}
 	return retorno;

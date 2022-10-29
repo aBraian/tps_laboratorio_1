@@ -14,10 +14,12 @@ int main(void) {
 	setbuf(stdout, NULL);
 	int menuPrincipal;
 	int respuesta;
-	eConfederacion confederaciones[6];
-	eJugador jugadores[6];
-	inicializarConfederaciones(confederaciones, 6);
-	inicializarJugadores(jugadores, 6);
+	int contadorJugadores;
+	eConfederacion confederaciones[LIMITE_CONFEDERACIONES];
+	eJugador jugadores[LIMITE_JUGADORES];
+	contadorJugadores = 0;
+	inicializarConfederaciones(confederaciones, LIMITE_CONFEDERACIONES);
+	inicializarJugadores(jugadores, LIMITE_JUGADORES);
 	do{
 		printf("FIFA - Menu Principal\n"
 			   "\n"
@@ -31,24 +33,42 @@ int main(void) {
 			switch(menuPrincipal){
 				case 1:
 					printf("\n");
-					if(altaJugadores(confederaciones, 6, jugadores, 6) == 0){
+					if(altaJugadores(confederaciones, LIMITE_CONFEDERACIONES, jugadores, LIMITE_JUGADORES) == 0){
 						contadorIdJugadores(ALTA);
+						contadorJugadores++;
 					}
 					printf("\n");
 					break;
 				case 2:
 					printf("\n");
-					bajaJugadores(confederaciones, 6, jugadores, 6);
+					if(contadorJugadores > 0 && bajaJugadores(confederaciones, LIMITE_CONFEDERACIONES, jugadores, LIMITE_JUGADORES) == 0){
+						contadorJugadores--;
+					}
+					else if(contadorJugadores == 0){
+						printf(ADVERTENCIA_JUGADORES);
+					}
 					printf("\n");
 					break;
 				case 3:
 					printf("\n");
-					modificarJugadores(confederaciones, 6, jugadores, 6);
+					if(contadorJugadores > 0 && modificarJugadores(confederaciones, LIMITE_CONFEDERACIONES, jugadores, LIMITE_JUGADORES) == 0){
+						printf("\nCAMBIOS APLICADOS\n");
+					}
+					else if(contadorJugadores == 0){
+						printf(ADVERTENCIA_JUGADORES);
+					}
 					printf("\n");
 					break;
 				case 4:
 					printf("\n");
-					submenuInformes(confederaciones, 6, jugadores, 6);
+					if(contadorJugadores > 0 && submenuInformes(confederaciones, LIMITE_CONFEDERACIONES, jugadores, LIMITE_JUGADORES) == 0){
+						printf("\n");
+						printf("REGRESO CORRECTAMENTE");
+						printf("\n");
+					}
+					else if(contadorJugadores == 0){
+						printf(ADVERTENCIA_JUGADORES);
+					}
 					printf("\n");
 					break;
 				case 5:

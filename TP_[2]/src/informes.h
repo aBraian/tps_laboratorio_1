@@ -13,10 +13,10 @@
 int vincularIdEstructuras(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceRelacion);
 int ordenarNombres(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores);
 int listarConfederacionesConJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores);
-int acumularSalariosJugadores(eJugador jugadores[], int longitudJugadores, float *totalSalarios);
-int contadorJugadores(eJugador jugadores[], int longitudJugadores, int *contador);
-int calcularPromedioSalarios(eJugador jugadores[], int longitudJugadores, float *pPromedio);
-int salariosMayorPromedio(eJugador jugadores[], int longitudJugadores, int *pCantidadSalarios);
+int listarSalarios(eJugador jugadores[], int longitudJugadores);
+int listarConfederacionMasAniosContrato(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores);
+int listarPorcentajeConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores);
+int listarRegionMasJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores);
 int submenuInformes(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores);
 
 #endif /* INFORMES_H_ */
