@@ -18,13 +18,14 @@ int incrementarIdConfederaciones(){
 	return idConfederacion;
 }
 
-int inicializarConfederaciones(eConfederacion confederaciones[], int longitud){
+int hardcodearConfederaciones(eConfederacion confederaciones[], int longitud){
 	int retorno;
 	int i;
 	retorno = -1;
 	if(confederaciones != NULL && longitud > 0){
 		for(i = 0; i < longitud; i++){
 			confederaciones[i].id = incrementarIdConfederaciones();
+			confederaciones[i].isEmpty = LLENO;
 			switch(i){
 				case 0:
 					confederaciones[i].anioCreacion = 1954;
@@ -77,9 +78,11 @@ int listarConfederaciones(eConfederacion confederaciones[], int longitud){
 			   "|%-5s|%-10s|%-24s|%-15s|\n"
 			   , "Listado Confederaciones","ID", "NOMBRE", "REGION", "ANIO CREACION");
 		for(i = 0; i < longitud; i++){
-			printf("|%-5d|%-10s|%-24s|%-15d|\n"
-				   , confederaciones[i].id, confederaciones[i].nombre
-				   , confederaciones[i].region, confederaciones[i].anioCreacion);
+			if(confederaciones[i].isEmpty == LLENO){
+				printf("|%-5d|%-10s|%-24s|%-15d|\n"
+					   , confederaciones[i].id, confederaciones[i].nombre
+					   , confederaciones[i].region, confederaciones[i].anioCreacion);
+			}
 		}
 		retorno = 0;
 		printf("==========================================================="
@@ -116,4 +119,162 @@ int selecionarConfederacion(eConfederacion confederaciones[], int longitud){
 		}
 	}
 	return retorno;
+}
+
+//Funciones para ABM Confederaciones
+
+int contadorIdConfederaciones(int opcion){
+	static int contadorConfederacionesId = 0;
+	if(opcion == 1){
+		contadorConfederacionesId++;
+	}
+	return contadorConfederacionesId;
+}
+
+int inicializarConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones){
+	int retorno;
+	int i;
+	retorno = -1;
+	if(confederaciones != NULL && longitudConfederaciones > 0){
+		for(i = 0; i < longitudConfederaciones; i++){
+			confederaciones[i].isEmpty = VACIO;
+		}
+		retorno = 0;
+	}
+	return retorno;
+}
+
+int buscarVacioConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones){
+	int retorno;
+	int i;
+	retorno = -1;
+	if(confederaciones != NULL && longitudConfederaciones > 0){
+		for(i = 0; i < longitudConfederaciones; i++){
+			if(confederaciones[i].isEmpty == VACIO){
+				retorno = i;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
+
+int altaConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones){
+	int retorno;
+	int indiceVacio;
+	int bufferAnioCreacion;
+	char bufferNombre[50];
+	char bufferRegion[50];
+	retorno = -1;
+	if(confederaciones != NULL && longitudConfederaciones > 0){
+		indiceVacio = buscarVacioConfederaciones(confederaciones, longitudConfederaciones);
+		if(indiceVacio != -1 &&
+		   utn_getInt(&bufferAnioCreacion, "Ingrese anio de creacion: ", "ANIO NO VALIDO (MINIMO 1900 - MAXIMO 2022)\n", 1900, 2022, 2) == 0 &&
+		   utn_getString(bufferNombre, 50, "Ingrese nombre: ", "ERROR\n", 2) == 0 &&
+		   utn_getString(bufferRegion, 50, "Ingrese region: ", "ERROR\n", 2) == 0){
+			confederaciones[indiceVacio].isEmpty = LLENO;
+			confederaciones[indiceVacio].id = incrementarIdConfederaciones();
+			confederaciones[indiceVacio].anioCreacion = bufferAnioCreacion;
+			strcpy(confederaciones[indiceVacio].nombre, bufferNombre);
+			strcpy(confederaciones[indiceVacio].region, bufferRegion);
+			retorno = 0;
+			printf(MENSAJE_EXITO);
+		}
+		else if(indiceVacio == -1){
+			printf("LIMITE DE JUGADORES ALCANZADO\n");
+		}
+		else{
+			printf(MENSAJE_ERROR);
+		}
+	}
+	return retorno;
+}
+
+int bajaConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones){
+	int retorno;
+	int idBuscada;
+	int idMaxima;
+	int indiceIdBuscada;
+	retorno = -1;
+	if(confederaciones != NULL && longitudConfederaciones > 0){
+		idMaxima = contadorIdConfederaciones(BAJA);
+		if(idMaxima > 0 &&
+		   listarConfederaciones(confederaciones, longitudConfederaciones) == 0 &&
+		   utn_getInt(&idBuscada, "Ingrese ID a dar de baja: ", "NO SE ENCONTRO LA ID INGRESADA\n", 1, idMaxima, 2) == 0){
+			indiceIdBuscada = buscarIdConfederacion(confederaciones, longitudConfederaciones, idBuscada);
+			if(indiceIdBuscada != -1){
+				confederaciones[indiceIdBuscada].isEmpty = VACIO;
+				retorno = 0;
+				printf("SE DIO DE BAJA - SE ENCONTRO LA ID INGRESADA\n");
+			}
+			else{
+				printf("\nNO SE DIO DE BAJA - NO SE ENCONTRO LA ID INGRESADA\n");
+			}
+		}
+		else{
+			printf("\nNO SE DIO DE BAJA - NO SE ENCONTRO LA ID INGRESADA\n");
+		}
+	}
+	return retorno;
+}
+
+int modificarConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones){
+	int retorno;
+		int idBuscada;
+		int idMaxima;
+		int indiceIdBuscada;
+		int submenuModificar;
+		int bufferAnioCreacion;
+		char bufferNombre[50];
+		char bufferRegion[50];
+		retorno = -1;
+		if(confederaciones != NULL && longitudConfederaciones > 0){
+			printf("Submenu Modificar Confederaciones\n"
+				   "\n"
+				   "1. MODIFICAR ANIO CREACION\n"
+				   "2. MODIFICAR NOMBRE\n"
+				   "3. MODIFICAR REGION\n"
+				   "\n");
+			idMaxima = contadorIdConfederaciones(BAJA);
+			if(utn_getInt(&submenuModificar, "OPCION: ", "OPCION NO VALIDA\n", 1, 3, 2) == 0 &&
+			   idMaxima > 0 &&
+			   listarConfederaciones(confederaciones, longitudConfederaciones) == 0 &&
+			   utn_getInt(&idBuscada, "Ingrese ID a modificar: ", "NO SE ENCONTRO LA ID INGRESADA\n", 1, idMaxima, 2) == 0){
+				indiceIdBuscada = buscarIdConfederacion(confederaciones, longitudConfederaciones, idBuscada);
+				printf("\n");
+				if(indiceIdBuscada != -1){
+					switch(submenuModificar){
+						case 1:
+							if(utn_getInt(&bufferAnioCreacion, "Ingrese anio de creacion: ", "ANIO NO VALIDO (MINIMO 1900 - MAXIMO 2022)\n", 1900, 2022, 2) == 0){
+								confederaciones[indiceIdBuscada].anioCreacion = (short)bufferAnioCreacion;
+								printf("\nCAMBIOS APLICADOS\n");
+							}
+							else{
+								printf("\nCAMBIOS NO APLICADOS\n");
+							}
+							break;
+						case 2:
+							if(utn_getString(bufferNombre, 50, "Ingrese nombre: ", "ERROR\n", 2) == 0){
+								strcpy(confederaciones[indiceIdBuscada].nombre, bufferNombre);
+								printf("\nCAMBIOS APLICADOS\n");
+							}
+							else{
+								printf("\nCAMBIOS NO APLICADOS\n");
+							}
+							break;
+						case 3:
+							if(utn_getString(bufferRegion, 50, "Ingrese region: ", "ERROR\n", 2) == 0){
+								strcpy(confederaciones[indiceIdBuscada].region, bufferRegion);
+								printf("\nCAMBIOS APLICADOS\n");
+							}
+							else{
+								printf("\nCAMBIOS NO APLICADOS\n");
+							}
+							break;
+					}
+				}
+				retorno = 0;
+			}
+		}
+		return retorno;
 }

@@ -18,7 +18,7 @@ int main(void) {
 	eConfederacion confederaciones[LIMITE_CONFEDERACIONES];
 	eJugador jugadores[LIMITE_JUGADORES];
 	contadorJugadores = 0;
-	inicializarConfederaciones(confederaciones, LIMITE_CONFEDERACIONES);
+	hardcodearConfederaciones(confederaciones, LIMITE_CONFEDERACIONES);
 	inicializarJugadores(jugadores, LIMITE_JUGADORES);
 	do{
 		printf("FIFA - Menu Principal\n"
