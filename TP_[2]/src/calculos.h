@@ -10,44 +10,99 @@
 
 #include "jugador.h"
 
-/// @brief Recibe la suma de varias cantidades y lo divide por el número de sumandos
-/// 	   y devuelve por referencia el promedio calculado
+/// @brief Acumula los salarios de los jugadores
 ///
-/// @param sumaCantidades Suma de varias cantidades
-/// @param divisor Numero de sumandos
-/// @param promedio Puntero al espacio de memoria donde se guardara el resultado
-/// @return Retorna 0 (EXITO) si obtiene un promedio o -1 (ERROR) si no
-int calcularPromedio(int sumaCantidades, int divisor, float *promedio);
-
-/// @brief Recibe dos valores, uno representa el total, el otro representa la proporcionalidad de una parte
-/// 	   respecto del total, y devuelve por referencia el porcentaje calculado
-///
-/// @param cantidadTotal Valor total de una parte
-/// @param cantidadPromedio Valor proporcional de una parte
-/// @param porcentaje Puntero al espacio de memoria donde se guardara el resultado
-/// @return Retorna 0 (EXITO) si obtiene un porcentaje o -1 (ERROR) si no
-int calcularPorcentaje(int cantidadTotal, int cantidadPromedio, float *porcentaje);
-
-/// @brief Recibe un precio y le calcula un aumento
-///
-/// @param precio Valor sobre el que se calcula el aumento
-/// @param porcentajeInteres Valor del aumento que se va a aplicar
-/// @param aumento Puntero al espacio de memoria donde se guardara el valor del aumento
-/// @param precioConInteres Puntero al espacio de memoria donde se guardara el valor del precio con el aumento aplicado
-/// @return Retorna 0 (EXITO) si obtiene el aumento y el precio con interes o -1 (ERROR) si no
-int calcularInteres(float precio, int porcentajeInteres, float *aumento, float *precioConInteres);
-int acumularSalarios(float salarios, float *total);
-
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param pTotalSalarios Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int acumularSalariosJugadores(eJugador jugadores[], int longitudJugadores, float *pTotalSalarios);
+
+/// @brief Acumula la cantidad de jugadores dados de alta
+///
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param pContador Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int contadorJugadores(eJugador jugadores[], int longitudJugadores, int *pContador);
+
+/// @brief Recibe la suma de los salarios y lo divide por la cantidad de jugadores
+///
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param pPromedio Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int calcularPromedioSalarios(eJugador jugadores[], int longitudJugadores, float *pPromedio);
+
+/// @brief Acumula la cantidad de jugadores que superen el salario promedio
+///
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param pCantidadSalarios Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int salariosMayorPromedio(eJugador jugadores[], int longitudJugadores, int *pCantidadSalarios);
+
+/// @brief Acumula los anios de contrato de cada jugador de una determinada confederacion
+///
+/// @param confederaciones Variable en la que estan las confederaciones
+/// @param longitudConfederaciones Tamaño del array
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param indiceConfederacion Indice de la confederacion con la que se quiere comparar
+/// @param pTotalAnios Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int acumularAniosContratoConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pTotalAnios);
+
+/// @brief Comprueba la confederacion que tiene mayor cantidad de anios de contrato
+///
+/// @param confederaciones Variable en la que estan las confederaciones
+/// @param longitudConfederaciones Tamaño del array
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param pCantidadAnios Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna el indice de la confederacion (EXITO) y -1 (ERROR)
 int confederacionMasAniosContrato(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int *pCantidadAnios);
-int acumularAniosContratoConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pTotalAnios);
+
+/// @brief Acumula la cantidad de jugadores de una determinada confederacion
+///
+/// @param confederaciones Variable en la que estan las confederaciones
+/// @param longitudConfederaciones Tamaño del array
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param indiceConfederacion Indice de la confederacion con la que se quiere comparar
+/// @param pContador Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int contadorJugadoresConfederacion(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pContador);
+
+/// @brief Recibe la cantidad total de jugadores y calcula el porcentaje de jugadores de cada confederacion
+///
+/// @param confederaciones Variable en la que estan las confederaciones
+/// @param longitudConfederaciones Tamaño del array
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param indiceConfederacion Indice de la confederacion con la que se quiere comparar
+/// @param pPorcentaje Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int calcularPorcentajeJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, float *pPorcentaje);
+
+/// @brief Acumula la cantidad de jugadores de una determinada region
+///
+/// @param confederaciones Variable en la que estan las confederaciones
+/// @param longitudConfederaciones Tamaño del array
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @param indiceConfederacion Indice de la confederacion con la que se quiere comparar
+/// @param pContador Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int contadorJugadoresRegion(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pContador);
+
+/// @brief Comprueba la region que tiene mayor cantidad de jugadores
+///
+/// @param confederaciones Variable en la que estan las confederaciones
+/// @param longitudConfederaciones Tamaño del array
+/// @param jugadores Variable en la que estan los jugadores
+/// @param longitudJugadores Tamaño del array
+/// @return Retorna el indice de la confederacion (EXITO) y -1 (ERROR)
 int regionMasJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores);
 
 #endif /* CALCULOS_H_ */

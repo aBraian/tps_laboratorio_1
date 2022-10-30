@@ -40,8 +40,16 @@ int utn_getFloat(float *pResultado, char *mensaje, char *mensajeError, int minim
 /// @return Retorna 0 si se obtuvo la cadena y -1 si no
 int utn_getString(char pResultado[], int longitudArray, char * mensaje, char * mensajeError, int reintentos);
 
+/// @brief Transforma una cadena de caracteres en minuscula
+///
+/// @param cadena Variable a transformar
+/// @param longitud Tamaño del array
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
 int convertirEnMinuscula(char cadena[], int longitud);
 
+/// @brief Pide una confirmacion al usuario para salir del menu
+///
+/// @return Retorna 0 (SALIR) y -1 (NO SALIR)
 int salirMenu(void);
 
 #endif /* INGRESODATOS_H_ */
