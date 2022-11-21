@@ -4,23 +4,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "confederacion.h"
+#include "jugador.h"
 #include "informes.h"
 #include "ingresoDatos.h"
-#include "jugador.h"
 
 int main(void) {
 	setbuf(stdout, NULL);
 	int menuPrincipal;
 	int respuesta;
 	int contadorJugadores;
-	eConfederacion confederaciones[LIMITE_CONFEDERACIONES];
-	eJugador jugadores[LIMITE_JUGADORES];
+	eConfederacion aConfederaciones[LIMITE_CONFEDERACIONES];
+	eJugador aJugadores[LIMITE_JUGADORES];
 	contadorJugadores = 0;
-	inicializarConfederaciones(confederaciones, LIMITE_CONFEDERACIONES);
-	hardcodearConfederaciones(confederaciones, LIMITE_CONFEDERACIONES);
-	inicializarJugadores(jugadores, LIMITE_JUGADORES);
+	cargaForzadaConfederaciones(aConfederaciones, LIMITE_CONFEDERACIONES);
+	inicializarJugadores(aJugadores, LIMITE_JUGADORES);
 	do{
 		printf("FIFA - Menu Principal\n"
 			   "\n"
@@ -34,15 +32,14 @@ int main(void) {
 			switch(menuPrincipal){
 				case 1:
 					printf("\n");
-					if(altaJugadores(confederaciones, LIMITE_CONFEDERACIONES, jugadores, LIMITE_JUGADORES) == 0){
-						contadorIdJugadores(ALTA);
+					if(altaJugadores(aConfederaciones, LIMITE_CONFEDERACIONES, aJugadores, LIMITE_JUGADORES) == 0){
 						contadorJugadores++;
 					}
 					printf("\n");
 					break;
 				case 2:
 					printf("\n");
-					if(contadorJugadores > 0 && bajaJugadores(confederaciones, LIMITE_CONFEDERACIONES, jugadores, LIMITE_JUGADORES) == 0){
+					if(contadorJugadores > 0 && bajaJugadores(aConfederaciones, LIMITE_CONFEDERACIONES, aJugadores, LIMITE_JUGADORES) == 0){
 						contadorJugadores--;
 					}
 					else if(contadorJugadores == 0){
@@ -52,7 +49,7 @@ int main(void) {
 					break;
 				case 3:
 					printf("\n");
-					if(contadorJugadores > 0 && modificarJugadores(confederaciones, LIMITE_CONFEDERACIONES, jugadores, LIMITE_JUGADORES) == 0){
+					if(contadorJugadores > 0 && modificarJugadores(aConfederaciones, LIMITE_CONFEDERACIONES, aJugadores, LIMITE_JUGADORES) == 0){
 						printf("\nCAMBIOS APLICADOS\n");
 					}
 					else if(contadorJugadores == 0){
@@ -62,7 +59,7 @@ int main(void) {
 					break;
 				case 4:
 					printf("\n");
-					if(contadorJugadores > 0 && submenuInformes(confederaciones, LIMITE_CONFEDERACIONES, jugadores, LIMITE_JUGADORES) == 0){
+					if(contadorJugadores > 0 && submenuInformes(aConfederaciones, LIMITE_CONFEDERACIONES, aJugadores, LIMITE_JUGADORES, contadorJugadores) == 0){
 						printf("\n");
 						printf("REGRESO CORRECTAMENTE");
 						printf("\n");

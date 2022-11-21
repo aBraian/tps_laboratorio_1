@@ -9,13 +9,15 @@
 #define CONFEDERACION_H_
 
 #define LIMITE_CONFEDERACIONES 6
+#define LONG_NOMBRE 50
+#define LONG_REGION 50
 
 typedef struct{
-	short isEmpty;
 	int id;
+	char nombre[LONG_NOMBRE];
+	char region[LONG_REGION];
 	int anioCreacion;
-	char nombre[50];
-	char region[50];
+	short isEmpty;
 }eConfederacion;
 
 /// @brief Incrementa de a uno la id confederaciones
@@ -25,74 +27,73 @@ int incrementarIdConfederaciones();
 
 /// @brief Realiza una carga forzada de datos
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitud Tamaño del array
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-int hardcodearConfederaciones(eConfederacion confederaciones[], int longitud);
+int cargaForzadaConfederaciones(eConfederacion aConfederaciones[], int longitud);
 
 /// @brief Imprime cada confederacion con sus datos
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitud Tamaño del array
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-int listarConfederaciones(eConfederacion confederaciones[], int longitud);
+int listarConfederaciones(eConfederacion aConfederaciones[], int longitud);
 
-/// @brief Busca la posicion de una ID determinada
+/// @brief Obtiene el nombre de una confederacion a traves de su ID
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitud Tamaño del array
-/// @param idBuscada ID que se busca
-/// @return Retorna la posicion de la ID (EXITO) y -1 (ERROR)
-int buscarIdConfederacion(eConfederacion confederaciones[], int longitud, int idBuscada);
+/// @param idBuscada ID que se usa para obtener el nombre
+/// @param aNombreConfederacion Array donde se dejara el nombre de la confederacion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
+int obtenerNombreConfederacion(eConfederacion aConfederaciones[], int longitud, int idBuscada, char aNombreConfederacion[]);
 
-/// @brief Permite ingresar la ID de confederacion a utilizar
+/// @brief Obtiene la region de una confederacion a traves de su ID
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitud Tamaño del array
-/// @return Retorna la posicion de la ID (EXITO) y -1 (ERROR)
-int selecionarConfederacion(eConfederacion confederaciones[], int longitud);
+/// @param idBuscada ID que se usa para obtener la region
+/// @param aNombreConfederacion Array donde se dejara la region de la confederacion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
+int obtenerRegionConfederacion(eConfederacion aConfederaciones[], int longitud, int idBuscada, char aRegionConfederacion[]);
 
 //Funciones para ABM Confederaciones
 
-/// @brief Acumula la cantidad de confederaciones dadas de alta
-///
-/// @param opcion Permite aumentar o devolver la cantidad de confederaciones dadas de alta
-/// @return Retorna la cantidad de ID de confederacion
-int contadorIdConfederaciones(int opcion);
+int buscarIdConfederacion(eConfederacion aConfederaciones[], int longitud, int idBuscada);
 
 /// @brief Inicializa las confederaciones como vacias
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitudConfederaciones Tamaño del array
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-int inicializarConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones);
+int inicializarConfederaciones(eConfederacion aConfederaciones[], int longitudConfederaciones);
 
 /// @brief Busca una posicion que este vacia
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitudConfederaciones Tamaño del array
 /// @return Retorna la posicion vacia (EXITO) y -1 (ERROR)
-int buscarVacioConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones);
+int buscarVacioConfederaciones(eConfederacion aConfederaciones[], int longitudConfederaciones);
 
 /// @brief Da de alta la confederacion ingresada por el usuario
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitudConfederaciones Tamaño del array
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-int altaConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones);
+int altaConfederaciones(eConfederacion aConfederaciones[], int longitudConfederaciones);
 
 /// @brief Da de baja la confederacion ingresada por el usuario
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitudConfederaciones Tamaño del array
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-int bajaConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones);
+int bajaConfederaciones(eConfederacion aConfederaciones[], int longitudConfederaciones);
 
 /// @brief Permite modificar la confederacion ingresada por el usuario
 ///
-/// @param confederaciones Variable en la que estan las confederaciones
+/// @param aConfederaciones Variable en la que estan las confederaciones
 /// @param longitudConfederaciones Tamaño del array
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-int modificarConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones);
+int modificarConfederaciones(eConfederacion aConfederaciones[], int longitudConfederaciones);
 
 #endif /* CONFEDERACION_H_ */

@@ -10,65 +10,80 @@
 #include <string.h>
 #include <ctype.h>
 
+/// @brief Solicita un numero al usuario y verifica que sea de tipo short
+///
+/// @param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
+static int getShort(short* pResultado);
+
+/// @brief Valida que lo ingresado sea de tipo short
+///
+/// @param pCadena Cadena que se recorre validando que sean caracteres permitidos por un short
+/// @return Retorna 0 (EXITO) y -1 (ERROR)
+static int isShort(char* pCadena);
+
 /// @brief Solicita un numero al usuario y verifica que sea de tipo entero
 ///
 /// @param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int getInt(int *pResultado);
+static int getInt(int* pResultado);
 
 /// @brief Valida que lo ingresado sea de tipo entero
 ///
-/// @param cadena Cadena que se recorre validando que sean caracteres permitidos por un entero
+/// @param pCadena Cadena que se recorre validando que sean caracteres permitidos por un entero
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int isInt(char *cadena);
+static int isInt(char* pCadena);
 
 /// @brief Solicita un numero al usuario y verifica que sea de tipo flotante
 ///
 /// @param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int getFloat(float *pResultado);
+static int getFloat(float* pResultado);
 
 /// @brief Valida que lo ingresado sea de tipo flotante
 ///
-/// @param cadena Cadena que se recorre validando que sean caracteres permitidos por un flotante
+/// @param pCadena Cadena que se recorre validando que sean caracteres permitidos por un flotante
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int isFloat(char *cadena);
+static int isFloat(char* pCadena);
 
 /// @brief Solicita una cadena de caracteres al usuario y verifica que sea de tipo caracter
 ///
 /// @param pResultado Array donde se dejara el resultado de la funcion
-/// @param longitudArray Tamaño del array
+/// @param longitud Tamaño del array
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int getString(char *pResultado, int longitudArray);
+static int getString(char* pResultado, int longitud);
 
 /// @brief Valida que lo ingresado sea de tipo cadena de caracteres
 ///
-/// @param cadena Cadena que se recorre validando que sean caracteres permitidos por una cadena de caracteres
+/// @param pCadena Cadena que se recorre validando que sean caracteres permitidos por una cadena de caracteres
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int isString(char *cadena);
+static int isString(char* pCadena);
 
 /// @brief Toma los datos de manera segura
 ///
-/// @param cadena Cadena que toma los datos ingresados
+/// @param pCadena Cadena que toma los datos ingresados
 /// @param longitud Tamaño de la cadena
 /// @return Retorna 0 (EXITO) y -1 (ERROR)
-static int myGets(char *cadena, int longitud);
+static int myGets(char* pCadena, int longitud);
 
-int utn_getInt(int *pResultado, char *mensaje, char *mensajeError, int minimo, int maximo, int reintentos){
+int utn_getShort(short* pResultado, char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos){
 	int retorno;
-	int numeroIngresado;
+	short numeroIngresado;
 	retorno = -1;
-	if(pResultado != NULL && mensaje != NULL && mensajeError != NULL && maximo >= minimo){
+	if(pResultado != NULL && pMensaje != NULL && pMensajeError != NULL && maximo >= minimo){
 		do{
-			printf(mensaje);
-			if(getInt(&numeroIngresado) == 0 && (numeroIngresado <= maximo && numeroIngresado >= minimo)){
+			printf(pMensaje);
+			if(getShort(&numeroIngresado) == 0 && (numeroIngresado <= maximo && numeroIngresado >= minimo)){
 				*pResultado = numeroIngresado;
 				retorno = 0;
 				break;
 			}
 			else{
-				printf(mensajeError);
 				reintentos--;
+				printf(pMensajeError);
+				if(reintentos != 0){
+					printf("Cantidad intentos: %d\n\n", reintentos);
+				}
 			}
 			fflush(stdin);
 		}while(reintentos > 0);
@@ -76,7 +91,64 @@ int utn_getInt(int *pResultado, char *mensaje, char *mensajeError, int minimo, i
 	return retorno;
 }
 
-static int getInt(int *pResultado){
+static int getShort(short* pResultado){
+	int retorno;
+	char buffer[64];
+	retorno = -1;
+	if(pResultado != NULL){
+		if(myGets(buffer, sizeof(buffer)) == 0 && isShort(buffer) == 0){
+			*pResultado = (short)atoi(buffer);
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+static int isShort(char* pCadena){
+	int i;
+	int retorno;
+	i = 0;
+	retorno = 0;
+	if(pCadena != NULL && strlen(pCadena) > 0){
+		if(pCadena[0] == '-'){
+				i = 1;
+		}
+		for(; pCadena[i] != '\0'; i++){
+			if(pCadena[i] < '0' || pCadena[i] > '9'){
+				retorno = -1;
+				break;
+			}
+		}
+	}
+	return retorno;
+}
+
+int utn_getInt(int* pResultado, char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos){
+	int retorno;
+	int numeroIngresado;
+	retorno = -1;
+	if(pResultado != NULL && pMensaje != NULL && pMensajeError != NULL && maximo >= minimo){
+		do{
+			printf(pMensaje);
+			if(getInt(&numeroIngresado) == 0 && (numeroIngresado <= maximo && numeroIngresado >= minimo)){
+				*pResultado = numeroIngresado;
+				retorno = 0;
+				break;
+			}
+			else{
+				reintentos--;
+				printf(pMensajeError);
+				if(reintentos != 0){
+					printf("Cantidad intentos: %d\n\n", reintentos);
+				}
+			}
+			fflush(stdin);
+		}while(reintentos > 0);
+	}
+	return retorno;
+}
+
+static int getInt(int* pResultado){
 	int retorno;
 	char buffer[64];
 	retorno = -1;
@@ -89,17 +161,17 @@ static int getInt(int *pResultado){
 	return retorno;
 }
 
-static int isInt(char *cadena){
+static int isInt(char* pCadena){
 	int i;
 	int retorno;
 	i = 0;
 	retorno = 0;
-	if(cadena != NULL && strlen(cadena) > 0){
-		if(cadena[0] == '-'){
+	if(pCadena != NULL && strlen(pCadena) > 0){
+		if(pCadena[0] == '-'){
 				i = 1;
 		}
-		for(; cadena[i] != '\0'; i++){
-			if(cadena[i] < '0' || cadena[i] > '9'){
+		for(; pCadena[i] != '\0'; i++){
+			if(pCadena[i] < '0' || pCadena[i] > '9'){
 				retorno = -1;
 				break;
 			}
@@ -108,21 +180,24 @@ static int isInt(char *cadena){
 	return retorno;
 }
 
-int utn_getFloat(float *pResultado, char *mensaje, char *mensajeError, int minimo, int maximo, int reintentos){
+int utn_getFloat(float* pResultado, char* pMensaje, char* pMensajeError, int minimo, int maximo, int reintentos){
 	int retorno;
 	float numeroIngresado;
 	retorno = -1;
-	if(pResultado != NULL && mensaje != NULL && mensajeError != NULL && maximo >= minimo){
+	if(pResultado != NULL && pMensaje != NULL && pMensajeError != NULL && maximo >= minimo){
 		do{
-			printf(mensaje);
+			printf(pMensaje);
 			if(getFloat(&numeroIngresado) == 0 && (numeroIngresado <= maximo && numeroIngresado >= minimo)){
 				*pResultado = numeroIngresado;
 				retorno = 0;
 				break;
 			}
 			else{
-				printf(mensajeError);
 				reintentos--;
+				printf(pMensajeError);
+				if(reintentos != 0){
+					printf("Cantidad intentos: %d\n\n", reintentos);
+				}
 			}
 			fflush(stdin);
 		}while(reintentos > 0);
@@ -130,7 +205,7 @@ int utn_getFloat(float *pResultado, char *mensaje, char *mensajeError, int minim
 	return retorno;
 }
 
-static int getFloat(float *pResultado){
+static int getFloat(float* pResultado){
 	int retorno;
 	char buffer[64];
 	retorno = -1;
@@ -143,23 +218,23 @@ static int getFloat(float *pResultado){
 	return retorno;
 }
 
-static int isFloat(char *cadena){
+static int isFloat(char* pCadena){
 	int i;
 	int retorno;
 	int flagParteDecimal;
 	i = 0;
 	retorno = 0;
 	flagParteDecimal = 0;
-	if(cadena != NULL && strlen(cadena) > 0){
-		if(cadena[0] == '-'){
+	if(pCadena != NULL && strlen(pCadena) > 0){
+		if(pCadena[0] == '-'){
 			i = 1;
 		}
-		for(; cadena[i] != '\0'; i++){
-			if(cadena[i] == '.' && flagParteDecimal == 0){
+		for(; pCadena[i] != '\0'; i++){
+			if(pCadena[i] == '.' && flagParteDecimal == 0){
 				flagParteDecimal = 1;
 				continue;
 			}
-			if(cadena[i] < '0' || cadena[i] > '9'){
+			if(pCadena[i] < '0' || pCadena[i] > '9'){
 				retorno = -1;
 				break;
 			}
@@ -168,21 +243,24 @@ static int isFloat(char *cadena){
 	return retorno;
 }
 
-int utn_getString(char pResultado[], int longitudArray, char * mensaje, char * mensajeError, int reintentos){
+int utn_getString(char aResultado[], int longitud, char* pMensaje, char* pMensajeError, int reintentos){
 	int retorno;
-	char nombreIngresado[longitudArray];
+	char auxNombre[longitud];
 	retorno = -1;
-	if(pResultado != NULL && mensaje != NULL && mensajeError != NULL && longitudArray > 0){
+	if(aResultado != NULL && pMensaje != NULL && pMensajeError != NULL && longitud > 0){
 		do{
-			printf(mensaje);
-			if(getString(nombreIngresado, longitudArray) == 0){
-				strcpy(pResultado, nombreIngresado);
+			printf(pMensaje);
+			if(getString(auxNombre, longitud) == 0){
+				strcpy(aResultado, auxNombre);
 				retorno = 0;
 				break;
 			}
 			else{
-				printf(mensajeError);
 				reintentos--;
+				printf(pMensajeError);
+				if(reintentos != 0){
+					printf("Cantidad intentos: %d\n\n", reintentos);
+				}
 			}
 			fflush(stdin);
 		}while(reintentos > 0);
@@ -190,12 +268,12 @@ int utn_getString(char pResultado[], int longitudArray, char * mensaje, char * m
 	return retorno;
 }
 
-static int getString(char * pResultado, int longitudArray){
+static int getString(char* pResultado, int longitud){
 	int retorno;
-	char buffer[longitudArray];
+	char buffer[longitud];
 	retorno = -1;
 	if(pResultado != NULL){
-		if(myGets(buffer, longitudArray) == 0 && isString(buffer) == 0){
+		if(myGets(buffer, longitud) == 0 && isString(buffer) == 0){
 			strcpy(pResultado, buffer);
 			retorno = 0;
 		}
@@ -203,16 +281,16 @@ static int getString(char * pResultado, int longitudArray){
 	return retorno;
 }
 
-static int isString(char * cadena){
+static int isString(char* pCadena){
 	int i;
 	int retorno;
 	retorno = 0;
-	if(cadena != NULL && strlen(cadena) > 0){
-		for(i = 0; cadena[i] != '\0'; i++){
-			if(cadena[i] == ' '){
+	if(pCadena != NULL && strlen(pCadena) > 0){
+		for(i = 0; pCadena[i] != '\0'; i++){
+			if(pCadena[i] == ' '){
 				continue;
 			}
-			if((cadena[i] < 'a' || cadena[i] > 'z') && (cadena[i] < 'A' || cadena[i] > 'Z')){
+			if((pCadena[i] < 'a' || pCadena[i] > 'z') && (pCadena[i] < 'A' || pCadena[i] > 'Z')){
 				retorno = -1;
 				break;
 			}
@@ -221,25 +299,25 @@ static int isString(char * cadena){
 	return retorno;
 }
 
-static int myGets(char *cadena, int longitud){
+static int myGets(char* pCadena, int longitud){
 	int retorno = -1;
-	if(cadena != NULL && longitud > 0 && fgets(cadena, longitud, stdin) == cadena){
+	if(pCadena != NULL && longitud > 0 && fgets(pCadena, longitud, stdin) == pCadena){
 		fflush(stdin);
-		if(cadena[strlen(cadena) - 1] == '\n'){
-			cadena[strlen(cadena) - 1] = '\0';
+		if(pCadena[strlen(pCadena) - 1] == '\n'){
+			pCadena[strlen(pCadena) - 1] = '\0';
 		}
 		retorno = 0;
 	}
 	return retorno;
 }
 
-int convertirEnMinuscula(char cadena[], int longitud){
+int convertirEnMinuscula(char aCadena[], int longitud){
 	int i;
 	int retorno;
 	retorno = -1;
-	if(cadena != NULL && longitud > 0){
+	if(aCadena != NULL && longitud > 0){
 		for(i = 0; i < longitud; i++){
-			cadena[i] = tolower(cadena[i]);
+			aCadena[i] = tolower(aCadena[i]);
 		}
 		retorno = 0;
 	}
@@ -249,17 +327,17 @@ int convertirEnMinuscula(char cadena[], int longitud){
 int salirMenu(void){
 	int retorno;
 	int flagSalida;
-	char respuesta[3];
+	char respuesta[2];
 	retorno = -1;
 	do{
-		if(utn_getString(respuesta, 3, "Desea salir (SI/NO): ", "ERROR\n", 1) == 0 &&
-		   convertirEnMinuscula(respuesta, 3) == 0){
+		if(utn_getString(respuesta, 2, "Desea salir (SI/NO): ", "ERROR\n", 1) == 0 &&
+		   convertirEnMinuscula(respuesta, 2) == 0){
 			flagSalida = 0;
-			if(strcmp(respuesta, "si") != 0 && strcmp(respuesta, "no") != 0){
+			if(strcmp(respuesta, "s") != 0 && strcmp(respuesta, "n") != 0){
 				flagSalida = 1;
 				printf("\nINGRESE 'SI' O 'NO'\n\n");
 			}
-			else if(strcmp(respuesta, "si") == 0){
+			else if(strcmp(respuesta, "s") == 0){
 				retorno = 0;
 			}
 		}

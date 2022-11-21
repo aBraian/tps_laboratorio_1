@@ -7,18 +7,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "informes.h"
+#include <string.h>
+#include "confederacion.h"
 #include "jugador.h"
+#include "calculos.h"
 
-int acumularSalariosJugadores(eJugador jugadores[], int longitudJugadores, float *pTotalSalarios){
+int acumularSalariosJugadores(eJugador aJugadores[], int longitudJugadores, float* pTotalSalarios){
 	int retorno;
 	int i;
 	float bufferSalarios;
 	retorno = -1;
-	if(jugadores != NULL && longitudJugadores > 0 && pTotalSalarios != NULL){
+	bufferSalarios = 0;
+	if(aJugadores != NULL && longitudJugadores > 0 && pTotalSalarios != NULL){
 		for(i = 0; i < longitudJugadores; i++){
-			if(jugadores[i].isEmpty == LLENO){
-				bufferSalarios += jugadores[i].salario;
+			if(aJugadores[i].isEmpty == LLENO){
+				bufferSalarios += aJugadores[i].salario;
 			}
 		}
 		*pTotalSalarios = bufferSalarios;
@@ -27,74 +30,50 @@ int acumularSalariosJugadores(eJugador jugadores[], int longitudJugadores, float
 	return retorno;
 }
 
-int contadorJugadores(eJugador jugadores[], int longitudJugadores, int *pContador){
+int calcularPromedioSalarios(eJugador aJugadores[], int longitudJugadores, int contadorJugadores, float* pPromedio){
 	int retorno;
-	int i;
-	int bufferContador;
-	retorno = -1;
-	bufferContador = 0;
-	if(jugadores != NULL && longitudJugadores > 0 && pContador != NULL){
-		for(i = 0; i < longitudJugadores; i++){
-			if(jugadores[i].isEmpty == LLENO){
-				bufferContador++;
-			}
-		}
-		*pContador = bufferContador;
-		retorno = 0;
-	}
-	return retorno;
-}
-
-int calcularPromedioSalarios(eJugador jugadores[], int longitudJugadores, float *pPromedio){
-	int retorno;
-	int bufferContador;
 	float bufferSalario;
 	retorno = -1;
-	if(jugadores != NULL && longitudJugadores > 0 && pPromedio != NULL &&
-	   acumularSalariosJugadores(jugadores, longitudJugadores, &bufferSalario) == 0 &&
-	   contadorJugadores(jugadores, longitudJugadores, &bufferContador) == 0 &&
-	   bufferSalario > 0 && bufferContador > 0){
-		*pPromedio = bufferSalario / bufferContador;
-		retorno = 0;
+	bufferSalario = 0;
+	if(aJugadores != NULL && longitudJugadores > 0 && pPromedio != NULL && contadorJugadores > 0){
+		if(acumularSalariosJugadores(aJugadores, longitudJugadores, &bufferSalario) == 0 &&
+		   contadorJugadores > 0){
+			*pPromedio = bufferSalario / contadorJugadores;
+			retorno = 0;
+		}
 	}
 	return retorno;
 }
 
-int salariosMayorPromedio(eJugador jugadores[], int longitudJugadores, int *pCantidadSalarios){
+int salariosMayorPromedio(eJugador aJugadores[], int longitudJugadores, int* pCantidadSalarios, float promedioSalarios){
 	int retorno;
 	int contadorSalarios;
 	int i;
-	int auxiliar;
-	float promedioSalarios;
 	retorno = -1;
 	contadorSalarios = 0;
-	if(jugadores != NULL && longitudJugadores > 0 && pCantidadSalarios != NULL &&
-	   calcularPromedioSalarios(jugadores, longitudJugadores, &promedioSalarios) == 0){
+	if(aJugadores != NULL && longitudJugadores > 0 && pCantidadSalarios != NULL){
 		for(i = 0; i < longitudJugadores; i++){
-			if(jugadores[i].isEmpty == LLENO &&
-			   jugadores[i].salario > promedioSalarios){
+			if(aJugadores[i].isEmpty == LLENO &&
+			   aJugadores[i].salario > promedioSalarios){
 				contadorSalarios++;
 			}
 		}
-		auxiliar = contadorSalarios;
-		*pCantidadSalarios = auxiliar;
+		*pCantidadSalarios = contadorSalarios;
 		retorno = 0;
 	}
 	return retorno;
 }
 
-int acumularAniosContratoConfederaciones(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pTotalAnios){
+int acumularAniosContratoConfederaciones(eJugador aJugadores[], int longitudJugadores, int idBuscada, int* pTotalAnios){
 	int retorno;
 	int i;
 	int bufferAnios;
-	int auxIndice;
 	retorno = -1;
 	bufferAnios = 0;
-	if(confederaciones != NULL && longitudConfederaciones > 0 && jugadores != NULL && longitudJugadores > 0 && pTotalAnios != NULL){
+	if(aJugadores != NULL && longitudJugadores > 0 && pTotalAnios != NULL){
 		for(i = 0; i < longitudJugadores; i++){
-			auxIndice = vincularIdEstructuras(confederaciones, longitudConfederaciones, jugadores, longitudJugadores, i);
-			if(jugadores[i].isEmpty == LLENO && auxIndice != -1 && indiceConfederacion == auxIndice){
-				bufferAnios += jugadores[i].aniosContrato;
+			if(aJugadores[i].isEmpty == LLENO && aJugadores[i].idConfederacion == idBuscada){
+				bufferAnios += aJugadores[i].aniosContrato;
 			}
 		}
 		*pTotalAnios = bufferAnios;
@@ -103,114 +82,103 @@ int acumularAniosContratoConfederaciones(eConfederacion confederaciones[], int l
 	return retorno;
 }
 
-int confederacionMasAniosContrato(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int *pCantidadAnios){
+int confederacionMasAniosContrato(eConfederacion aConfederaciones[], int longitudConfederaciones, eJugador aJugadores[], int longitudJugadores, int* pCantidadAnios, char aNombreConfederacion[]){
 	int retorno;
 	int i;
 	int bufferTotal;
 	int flag;
 	int cantidadMayor;
-	int auxiliar;
+	char auxNombreConfederacion[LONG_NOMBRE];
 	retorno = -1;
 	flag = 0;
-	if(confederaciones != NULL && longitudConfederaciones > 0 && jugadores != NULL && longitudJugadores > 0 && pCantidadAnios != NULL){
+	if(aConfederaciones != NULL && longitudConfederaciones > 0 && pCantidadAnios != NULL){
 		for(i = 0; i < longitudConfederaciones; i++){
-			if(acumularAniosContratoConfederaciones(confederaciones, longitudConfederaciones, jugadores, longitudJugadores, i, &bufferTotal) == 0 &&
+			if(acumularAniosContratoConfederaciones(aJugadores, longitudJugadores, aConfederaciones[i].id, &bufferTotal) == 0 &&
 			   flag == 0){
 				cantidadMayor = bufferTotal;
-				retorno = i;
+				obtenerNombreConfederacion(aConfederaciones, longitudConfederaciones, aConfederaciones[i].id, auxNombreConfederacion);
 				flag = 1;
 			}
-			else if(flag == 1 && bufferTotal > cantidadMayor){
+			else if(bufferTotal > cantidadMayor){
 				cantidadMayor = bufferTotal;
-				retorno = i;
+				obtenerNombreConfederacion(aConfederaciones, longitudConfederaciones, aConfederaciones[i].id, auxNombreConfederacion);
 			}
-			auxiliar = cantidadMayor;
-			*pCantidadAnios = auxiliar;
 		}
+		retorno = 0;
+		*pCantidadAnios = cantidadMayor;
+		strncpy(aNombreConfederacion, auxNombreConfederacion, LONG_NOMBRE);
 	}
 	return retorno;
 }
 
-int contadorJugadoresConfederacion(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pContador){
+int calcularPorcentajeJugadores(eConfederacion aConfederaciones[], int longitudConfederaciones, eJugador aJugadores[], int longitudJugadores, int idBuscada, int contadorJugadores, float* pPorcentaje){
 	int retorno;
 	int i;
-	int bufferContador;
-	int auxIndice;
+	int bufferPorcentaje;
 	retorno = -1;
-	bufferContador = 0;
-	if(confederaciones != NULL && longitudConfederaciones > 0 && jugadores != NULL && longitudJugadores > 0 && pContador != NULL){
+	bufferPorcentaje = 0;
+	if(aConfederaciones != NULL && longitudConfederaciones > 0 &&
+	   aJugadores != NULL && longitudJugadores > 0 && contadorJugadores > 0 && pPorcentaje != NULL){
 		for(i = 0; i < longitudJugadores; i++){
-			auxIndice = vincularIdEstructuras(confederaciones, longitudConfederaciones, jugadores, longitudJugadores, i);
-			if(jugadores[i].isEmpty == LLENO && auxIndice != -1 && indiceConfederacion == auxIndice){
-				bufferContador++;;
+			if(aJugadores[i].isEmpty == LLENO && aJugadores[i].idConfederacion == idBuscada){
+				bufferPorcentaje++;
 			}
 		}
-		*pContador = bufferContador;
+		*pPorcentaje = (float)bufferPorcentaje * 100 / contadorJugadores;
 		retorno = 0;
 	}
 	return retorno;
 }
 
-int calcularPorcentajeJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, float *pPorcentaje){
-	int retorno;
-	int cantidadTotal;
-	int cantidadPorcentaje;
-	retorno = -1;
-	if(confederaciones != NULL && longitudConfederaciones > 0 &&
-	   jugadores != NULL && longitudJugadores > 0 && pPorcentaje != NULL &&
-	   contadorJugadores(jugadores, longitudJugadores, &cantidadTotal) == 0 &&
-	   contadorJugadoresConfederacion(confederaciones, longitudConfederaciones, jugadores, longitudJugadores, indiceConfederacion, &cantidadPorcentaje) == 0 &&
-	   cantidadTotal != 0){
-		*pPorcentaje = (float)cantidadPorcentaje * 100 / cantidadTotal;
-		retorno = 0;
-	}
-	return retorno;
-}
-
-int contadorJugadoresRegion(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores, int indiceConfederacion, int *pContador){
+int acumularJugadoresRegion(eJugador aJugadores[], int longitudJugadores, int idBuscada, int* pTotalJugadores){
 	int retorno;
 	int i;
-	int bufferContador;
-	int auxIndice;
+	int bufferJugadores;
 	retorno = -1;
-	bufferContador = 0;
-	if(confederaciones != NULL && longitudConfederaciones > 0 && jugadores != NULL && longitudJugadores > 0 && pContador != NULL){
+	bufferJugadores = 0;
+	if(aJugadores != NULL && longitudJugadores > 0 && pTotalJugadores != NULL){
 		for(i = 0; i < longitudJugadores; i++){
-			auxIndice = vincularIdEstructuras(confederaciones, longitudConfederaciones, jugadores, longitudJugadores, i);
-			if(jugadores[i].isEmpty == LLENO && auxIndice != -1 &&
-			   confederaciones[indiceConfederacion].region == confederaciones[auxIndice].region){
-				bufferContador++;
+			if(aJugadores[i].isEmpty == LLENO && aJugadores[i].idConfederacion == idBuscada){
+				bufferJugadores++;
 			}
 		}
-		*pContador = bufferContador;
+		*pTotalJugadores = bufferJugadores;
 		retorno = 0;
 	}
 	return retorno;
 }
 
-int regionMasJugadores(eConfederacion confederaciones[], int longitudConfederaciones, eJugador jugadores[], int longitudJugadores){
+int regionMasJugadores(eConfederacion aConfederaciones[], int longitudConfederaciones, eJugador aJugadores[], int longitudJugadores, int* pContadorJugadores, int* pIdRegion, char aNombreRegion[]){
 	int retorno;
 	int i;
 	int bufferContador;
 	int cantidadMayor;
 	int flag;
+	int auxId;
+	char auxNombreRegion[LONG_REGION];
 	retorno = -1;
 	cantidadMayor = 0;
 	flag = 0;
-	if(confederaciones != NULL && longitudConfederaciones > 0 &&
-	   jugadores != NULL && longitudJugadores > 0){
+	if(aConfederaciones != NULL && longitudConfederaciones > 0 &&
+	   aJugadores != NULL && longitudJugadores > 0){
 		for(i = 0; i < longitudConfederaciones; i++){
-			if(contadorJugadoresRegion(confederaciones, longitudConfederaciones, jugadores, longitudJugadores, i, &bufferContador) == 0 &&
+			if(acumularJugadoresRegion(aJugadores, longitudJugadores, aConfederaciones[i].id, &bufferContador) == 0 &&
 			   flag == 0){
 				cantidadMayor = bufferContador;
-				retorno = i;
+				auxId = aConfederaciones[i].id;
+				obtenerRegionConfederacion(aConfederaciones, longitudConfederaciones, aConfederaciones[i].id, auxNombreRegion);
 				flag = 1;
 			}
 			else if(flag == 1 && bufferContador > cantidadMayor){
 				cantidadMayor = bufferContador;
-				retorno = i;
+				auxId = aConfederaciones[i].id;
+				obtenerRegionConfederacion(aConfederaciones, longitudConfederaciones, aConfederaciones[i].id, auxNombreRegion);
 			}
 		}
+		retorno = 0;
+		*pContadorJugadores = cantidadMayor;
+		*pIdRegion = auxId;
+		strncpy(aNombreRegion, auxNombreRegion, LONG_NOMBRE);
 	}
 	return retorno;
 }
